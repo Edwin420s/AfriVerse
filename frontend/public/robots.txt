@@ -1,0 +1,17 @@
+# AfriVerse - Cultural Knowledge Preservation Platform
+# https://afriverse.org/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /explore
+Allow: /communities
+Allow: /timeline
+Allow: /entry/*
+
+Disallow: /api/
+Disallow: /profile
+Disallow: /validator
+Disallow: /submit
+
+# Sitemap
+Sitemap: https://afriverse.org/sitemap.xml
