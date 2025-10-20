@@ -1,20 +1,33 @@
+"""Symbolizer Agent
+
+Converts transcripts into MeTTa atoms by calling the backend symbolizer API,
+performs basic validation/repair of atom syntax, updates the backend, and
+returns results.
+
+Env:
+- BACKEND_URL: Backend base URL (default http://localhost:4000)
+"""
+
 from uagents import Agent, Context, Model
 import requests
 import os
 import json
 
 class SymbolizeJob(Model):
+    """Message model: a request to symbolize a transcript into atoms."""
     entry_id: int
     transcript: str
     context: dict = {}
 
 class SymbolizeResult(Model):
+    """Message model: symbolization result with atoms or an error."""
     entry_id: int
     success: bool
     atoms: list = []
     error: str = None
 
 class SymbolizerAgent(Agent):
+    """Agent that requests atom extraction and validates the resulting atoms."""
     def __init__(self):
         super().__init__(
             name="symbolizer_agent",
@@ -25,6 +38,7 @@ class SymbolizerAgent(Agent):
         
     @self.on_message(model=SymbolizeJob)
     async def handle_symbolize_job(self, ctx: Context, sender: str, job: SymbolizeJob):
+        """Extract and validate atoms for the given transcript, update backend, reply."""
         ctx.logger.info(f"Symbolizing entry {job.entry_id}")
         
         try:
@@ -55,7 +69,7 @@ class SymbolizerAgent(Agent):
             await ctx.send(sender, result)
     
     async def extract_atoms(self, transcript: str, context: dict) -> list:
-        """Extract MeTTa atoms from transcript using LLM"""
+        """Call backend symbolizer endpoint to extract MeTTa atoms from transcript."""
         symbolizer_url = f"{self.backend_url}/api/symbolize"
         
         data = {
@@ -70,7 +84,7 @@ class SymbolizerAgent(Agent):
         return result.get('atoms', [])
     
     async def validate_atoms(self, atoms: list) -> list:
-        """Validate MeTTa syntax and structure"""
+        """Ensure atoms follow basic MeTTa syntax; attempt trivial fixes where possible."""
         valid_atoms = []
         
         for atom in atoms:
@@ -85,13 +99,13 @@ class SymbolizerAgent(Agent):
         return valid_atoms
     
     def is_valid_atom(self, atom: str) -> bool:
-        """Check if atom has valid MeTTa syntax"""
+        """Return True if atom looks like a parenthesized token sequence."""
         return (atom.startswith('(') and 
                 atom.endswith(')') and 
                 len(atom.split()) >= 2)
     
     def fix_atom_syntax(self, atom: str) -> str:
-        """Attempt to fix common syntax issues"""
+        """Best-effort fix for missing parentheses around an atom string."""
         atom = atom.strip()
         if not atom.startswith('('):
             atom = '(' + atom
@@ -100,7 +114,7 @@ class SymbolizerAgent(Agent):
         return atom if self.is_valid_atom(atom) else None
     
     async def update_backend(self, entry_id: int, atoms: list):
-        """Update backend with extracted atoms"""
+        """PATCH extracted atoms and status to backend entry."""
         update_url = f"{self.backend_url}/api/entries/{entry_id}/atoms"
         
         data = {

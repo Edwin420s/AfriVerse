@@ -1,3 +1,12 @@
+"""Validator Agent
+
+Validates MeTTa atoms for cultural sensitivity and knowledge consistency,
+aggregates decisions, and posts validation outcomes to the backend.
+
+Env:
+- BACKEND_URL: Backend base URL (default http://localhost:4000)
+"""
+
 from uagents import Agent, Bureau, Context, Model
 import requests
 import os
@@ -5,12 +14,14 @@ import json
 from typing import List, Dict, Any
 
 class ValidationRequest(Model):
+    """Message model describing a validation request for an entry."""
     entry_id: int
     validators: List[str]
     atoms: List[str]
     context: Dict[str, Any] = {}
 
 class ValidationResult(Model):
+    """Message model with a validator's decision and details."""
     entry_id: int
     validator: str
     decision: str  # 'approved' or 'rejected'
@@ -19,6 +30,7 @@ class ValidationResult(Model):
     validated_atoms: List[str] = []
 
 class ValidatorAgent(Agent):
+    """Agent that runs syntax, sensitivity, and consistency checks for atoms."""
     def __init__(self):
         super().__init__(
             name="validator_agent",
@@ -30,6 +42,7 @@ class ValidatorAgent(Agent):
         
     @self.on_message(model=ValidationRequest)
     async def handle_validation_request(self, ctx: Context, sender: str, request: ValidationRequest):
+        """Validate given atoms, aggregate results, update backend, and reply."""
         ctx.logger.info(f"Processing validation for entry {request.entry_id}")
         
         try:
@@ -69,7 +82,7 @@ class ValidatorAgent(Agent):
             await ctx.send(sender, error_result)
     
     async def validate_atoms(self, atoms: List[str], context: Dict[str, Any]) -> List[ValidationResult]:
-        """Validate atoms against community knowledge and rules"""
+        """Run syntax, sensitivity, and consistency checks over each atom."""
         results = []
         
         for atom in atoms:
@@ -136,13 +149,13 @@ class ValidatorAgent(Agent):
         return results
     
     def is_valid_atom_syntax(self, atom: str) -> bool:
-        """Check if atom has valid MeTTa syntax"""
+        """Return True if atom is a plausible MeTTa expression."""
         return (atom.startswith('(') and 
                 atom.endswith(')') and 
                 len(atom.split()) >= 2)
     
     async def check_cultural_sensitivity(self, atom: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Check if atom contains culturally sensitive content"""
+        """Reject atoms containing basic sensitive terms; otherwise approve."""
         sensitive_terms = [
             'sacred', 'secret', 'restricted', 'initiation',
             'elder_only', 'gender_restricted'
@@ -159,7 +172,7 @@ class ValidatorAgent(Agent):
         return {'approved': True}
     
     async def check_knowledge_consistency(self, atom: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Check if atom is consistent with existing knowledge"""
+        """Query backend for a consistency confidence value for the atom."""
         try:
             # Query existing knowledge for consistency
             query_url = f"{self.backend_url}/api/entries/query"
@@ -203,7 +216,7 @@ class ValidatorAgent(Agent):
             }
     
     def extract_key_terms(self, atom: str) -> List[str]:
-        """Extract key terms from atom for consistency checking"""
+        """Extract key terms from an atom, filtering common predicates."""
         # Remove parentheses and split
         content = atom[1:-1].strip()
         terms = content.split()
@@ -215,7 +228,7 @@ class ValidatorAgent(Agent):
         return key_terms
     
     async def aggregate_decisions(self, results: List[ValidationResult], validators: List[str]) -> Dict[str, Any]:
-        """Aggregate validation results from multiple validators"""
+        """Aggregate multiple validator decisions into a single decision + stats."""
         if not results:
             return {'decision': 'rejected', 'confidence': 0.0}
         
@@ -242,7 +255,7 @@ class ValidatorAgent(Agent):
         }
     
     async def update_backend(self, entry_id: int, decision: Dict[str, Any], results: List[ValidationResult]):
-        """Update backend with validation results"""
+        """POST aggregate validation decision and metadata to backend."""
         update_url = f"{self.backend_url}/api/validate/{entry_id}"
         
         data = {
@@ -256,7 +269,7 @@ class ValidatorAgent(Agent):
         response.raise_for_status()
     
     def load_community_validators(self) -> Dict[str, List[str]]:
-        """Load community validators from configuration"""
+        """Return a static mapping of communities to validator sets (placeholder)."""
         # This would typically load from a database or config file
         return {
             'general': ['validator1', 'validator2', 'validator3'],
@@ -266,7 +279,7 @@ class ValidatorAgent(Agent):
     
     @self.on_interval(period=120.0)
     async def update_validator_list(self, ctx: Context):
-        """Periodically update validator list from backend"""
+        """Fetch updated validator lists from backend periodically."""
         try:
             validators_url = f"{self.backend_url}/api/validators"
             response = requests.get(validators_url)

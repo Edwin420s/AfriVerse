@@ -1,13 +1,24 @@
+"""Query Agent
+
+Handles natural language knowledge queries by delegating to the backend query
+API and returning structured responses with reasoning traces and confidence.
+
+Env:
+- BACKEND_URL: Backend base URL (default http://localhost:4000)
+"""
+
 from uagents import Agent, Context, Model
 import requests
 import os
 
 class QueryRequest(Model):
+    """Message model describing a user query and optional context."""
     query: str
     user_id: str = "anonymous"
     context: dict = {}
 
 class QueryResponse(Model):
+    """Message model containing the query answer and metadata."""
     success: bool
     answer: str
     reasoning_trace: list = []
@@ -16,6 +27,7 @@ class QueryResponse(Model):
     error: str = None
 
 class QueryAgent(Agent):
+    """Agent that forwards queries to the backend and relays structured answers."""
     def __init__(self):
         super().__init__(
             name="query_agent",
@@ -26,6 +38,7 @@ class QueryAgent(Agent):
         
     @self.on_message(model=QueryRequest)
     async def handle_query(self, ctx: Context, sender: str, request: QueryRequest):
+        """Process incoming `QueryRequest` via backend and reply with `QueryResponse`."""
         ctx.logger.info(f"Processing query: {request.query}")
         
         try:
@@ -45,7 +58,7 @@ class QueryAgent(Agent):
             await ctx.send(sender, response)
     
     async def process_query(self, query: str, context: dict) -> QueryResponse:
-        """Process natural language query"""
+        """Forward the query to the backend query endpoint and parse response."""
         query_url = f"{self.backend_url}/api/query"
         
         data = {
@@ -68,7 +81,7 @@ class QueryAgent(Agent):
     
     @self.on_interval(period=30.0)
     async def health_check(self, ctx: Context):
-        """Regular health check"""
+        """Periodic connectivity check against the backend health endpoint."""
         try:
             response = requests.get(f"{self.backend_url}/health")
             if response.status_code == 200:
