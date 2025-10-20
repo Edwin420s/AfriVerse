@@ -37,3 +37,75 @@ AfriVerse is a decentralized platform for preserving African indigenous knowledg
 ```bash
 git clone https://github.com/afriverse/frontend.git
 cd afriverse-frontend
+
+```
+Install dependencies:
+```
+npm install
+```
+
+Run the development server:
+
+```
+npm run dev
+```
+Open http://localhost:3000 in your browser.
+
+Project Structure
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # Reusable React components
+├── styles/             # Global styles and Tailwind config
+└── lib/                # Utility functions and API calls
+```
+## Key Components
+### SubmitWizard
+Multi-step form for contributing cultural knowledge with:
+
+Content type selection
+
+Voice recording and file upload
+
+Metadata collection
+
+Consent and license agreement
+
+Submission review
+
+## VoiceRecorder
+Audio recording component with:
+
+Real-time recording visualization
+
+Playback and deletion controls
+
+Mobile-friendly interface
+
+## NodeGraph
+Interactive knowledge graph visualization showing:
+
+Cultural entities and relationships
+
+Symbolic AI reasoning connections
+
+Community validation status
+
+## ReasoningTrace
+Displays AI processing results with:
+
+Natural language explanations
+
+Technical symbolic representations
+
+Cultural context preservation
+
+## Environment Variables
+
+Create a .env.local file: 
+```
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
+NEXT_PUBLIC_IPFS_GATEWAY=https://ipfs.io/ipfs
+NEXT_PUBLIC_CONTRACT_ADDRESS=0x...
+```
+
