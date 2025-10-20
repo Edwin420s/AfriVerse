@@ -1,0 +1,111 @@
+;; AfriVerse Cultural Knowledge Base - Example MeTTa Atoms
+;; Indigenous Knowledge Representation for African Cultural Heritage
+
+;; ===== PLANT KNOWLEDGE =====
+(plant "aloe_vera")
+(has_local_name "aloe_vera" "mwarubaini")
+(property "aloe_vera" "soothing")
+(property "aloe_vera" "cooling")
+(treats "aloe_vera" "burn")
+(treats "aloe_vera" "skin_irritation")
+(used_for "aloe_vera" "first_aid")
+(found_in "aloe_vera" "eastern_africa")
+(found_in "aloe_vera" "dry_regions")
+(harvest_season "aloe_vera" "year_round")
+
+(plant "neem")
+(has_local_name "neem" "muarubaini")
+(property "neem" "antibacterial")
+(property "neem" "antifungal")
+(treats "neem" "malaria")
+(treats "neem" "skin_disease")
+(used_for "neem" "pesticide")
+(used_for "neem" "toothcare")
+
+;; ===== MEDICINAL PRACTICES =====
+(practice "herbal_compress")
+(uses "herbal_compress" "aloe_vera")
+(treats_with "herbal_compress" "burn" "aloe_vera")
+(preparation "herbal_compress" "extract_gel")
+(application "herbal_compress" "direct_application")
+
+(practice "traditional_tea")
+(uses "traditional_tea" "neem")
+(treats_with "traditional_tea" "malaria" "neem")
+(preparation "traditional_tea" "boil_leaves")
+(application "traditional_tea" "oral_consumption")
+
+;; ===== CULTURAL PROVERBS =====
+(proverb "When spider webs unite, they can tie up a lion.")
+(meaning "unity" "strength")
+(origin "ethiopia")
+(language "amharic")
+(teaches "proverb_1" "cooperation")
+(teaches "proverb_1" "community")
+
+(proverb "The child who is not embraced by the village will burn it down to feel its warmth.")
+(meaning "community" "responsibility")
+(origin "nigeria")
+(language "yoruba")
+(teaches "proverb_2" "inclusion")
+(teaches "proverb_2" "collective_care")
+
+;; ===== RITUALS AND CEREMONIES =====
+(ritual "rain_making")
+(practiced_by "rain_making" "maasai")
+(season "rain_making" "dry_season")
+(purpose "rain_making" "agriculture")
+(purpose "rain_making" "livestock")
+
+(ceremony "coming_of_age")
+(practiced_by "coming_of_age" "xhoza")
+(age_group "coming_of_age" "adolescence")
+(significance "coming_of_age" "community_initiation")
+
+;; ===== ECOLOGICAL KNOWLEDGE =====
+(weather_sign "red_sky_at_night")
+(predicts "red_sky_at_night" "good_weather")
+(region "red_sky_at_night" "east_africa")
+(reliability "red_sky_at_night" "high")
+
+(plant_indicator "acacia_flowering")
+(predicts "acacia_flowering" "rainy_season")
+(timing "acacia_flowering" "2_weeks_before_rain")
+
+;; ===== RELATIONSHIPS AND INFERENCES =====
+;; Inference rules
+(implies (and (plant ?p) (treats ?p ?d)) (has_medicinal_use ?p))
+(implies (and (practice ?pr) (uses ?pr ?p)) (involves_plant ?pr ?p))
+
+;; Type hierarchies
+(isa "aloe_vera" "medicinal_plant")
+(isa "neem" "medicinal_plant")
+(isa "herbal_compress" "external_treatment")
+(isa "traditional_tea" "internal_treatment")
+
+;; Cross-references
+(related "aloe_vera" "neem")
+(contrast "external_treatment" "internal_treatment")
+
+;; ===== PROVENANCE AND VALIDATION =====
+(provenance "aloe_knowledge" "validated_by" "community_elders")
+(provenance "aloe_knowledge" "source" "oral_tradition")
+(provenance "aloe_knowledge" "region" "kamba_community")
+(provenance "aloe_knowledge" "collection_date" "2025-10-15")
+
+;; License and usage rights
+(license "cultural_knowledge" "CC_BY_NC_4.0")
+(usage_restrictions "sacred_knowledge" "community_only")
+(access_level "public_knowledge" "open_access")
+
+;; ===== QUERY EXAMPLES =====
+;; These demonstrate how to query the knowledge base
+
+;; Find all plants that treat burns:
+;; (match (treats ?plant "burn") (plant ?plant))
+
+;; Find practices using a specific plant:
+;; (match (uses ?practice "aloe_vera") (practice ?practice))
+
+;; Get all proverbs about community:
+;; (match (teaches ?proverb "community") (proverb ?proverb))
