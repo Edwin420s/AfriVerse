@@ -53,11 +53,60 @@ Open http://localhost:3000 in your browser.
 
 Project Structure
 ```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-├── styles/             # Global styles and Tailwind config
-└── lib/                # Utility functions and API calls
+...
+frontend/
+├── package.json
+├── next.config.js
+├── tailwind.config.js
+├── postcss.config.js
+├── jsconfig.json
+├── middleware.js
+├── .env.local.example
+├── public/
+│   ├── assets/
+│   │   ├── icons/
+│   │   └── images/
+│   └── favicon.ico
+├── src/
+│   ├── app/
+│   │   ├── layout.js
+│   │   ├── page.js
+│   │   ├── error.js
+│   │   ├── not-found.js
+│   │   ├── submit/
+│   │   │   └── page.js
+│   │   ├── explore/
+│   │   │   └── page.js
+│   │   ├── entry/
+│   │   │   └── [id]/
+│   │   │       └── page.js
+│   │   ├── validator/
+│   │   │   └── page.js
+│   │   └── profile/
+│   │       └── page.js
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── SubmitWizard.jsx
+│   │   ├── VoiceRecorder.jsx
+│   │   ├── NodeGraph.jsx
+│   │   ├── ReasoningTrace.jsx
+│   │   ├── ConsentModal.jsx
+│   │   ├── LoadingSpinner.jsx
+│   │   ├── ErrorBoundary.jsx
+│   │   ├── Web3Provider.jsx
+│   │   └── WalletConnect.jsx
+│   ├── hooks/
+│   │   ├── useLocalStorage.js
+│   │   └── useAudioRecorder.js
+│   ├── lib/
+│   │   └── api.js
+│   ├── utils/
+│   │   ├── validation.js
+│   │   └── constants.js
+│   └── styles/
+│       └── globals.css
+└── README.md
 ```
 ## Key Components
 ### SubmitWizard
