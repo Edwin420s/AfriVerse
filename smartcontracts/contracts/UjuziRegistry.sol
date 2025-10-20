@@ -1,220 +1,232 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import "./interfaces/IUjuziRegistry.sol";
+import "./CulturalToken.sol";
+import "./ValidatorManager.sol";
+
 /**
  * @title UjuziRegistry
- * @dev Smart contract for registering and validating cultural knowledge entries
- * on the AfriVerse platform
+ * @dev Main registry for AfriVerse cultural knowledge entries
+ * Manages submission, validation, and provenance of indigenous knowledge
  */
-contract UjuziRegistry {
-    struct Entry {
-        bytes32 cid;        // IPFS content identifier
-        address author;     // Submitter's address
-        uint256 timestamp;  // Submission time
-        string license;     // Content license
-        uint8 status;       // 0=pending, 1=validated, 2=rejected
+contract UjuziRegistry is IUjuziRegistry {
+    // Entry status enumeration
+    enum EntryStatus { Pending, Validated, Rejected, Archived }
+    
+    // License types for cultural content
+    enum LicenseType { 
+        CommunityOnly, 
+        CC_BY_NC, 
+        ResearchOnly, 
+        OpenAccess 
     }
     
-    // Storage
-    Entry[] public entries;
-    mapping(uint => address[]) public validators;
-    mapping(address => uint) public reputation;
+    // Entry structure
+    struct CulturalEntry {
+        bytes32 cid; // IPFS content identifier
+        address author;
+        uint256 timestamp;
+        LicenseType license;
+        EntryStatus status;
+        string language;
+        string community;
+        uint256 validationScore;
+        bytes32[] atomHashes; // Hashes of symbolic atoms
+    }
+    
+    // State variables
+    CulturalEntry[] public entries;
+    ValidatorManager public validatorManager;
+    CulturalToken public culturalToken;
+    
+    // Mappings
+    mapping(uint256 => address[]) public entryValidators;
+    mapping(uint256 => mapping(address => bool)) public hasValidated;
+    mapping(bytes32 => uint256) public cidToEntryId;
+    mapping(address => uint256[]) public authorEntries;
     
     // Events
     event EntrySubmitted(
-        uint indexed entryId, 
-        bytes32 indexed cid, 
-        address author,
-        string license
+        uint256 indexed entryId,
+        bytes32 indexed cid,
+        address indexed author,
+        LicenseType license,
+        string language,
+        string community
     );
     
     event EntryValidated(
-        uint indexed entryId, 
-        bool approved, 
-        address validator,
-        string notes
+        uint256 indexed entryId,
+        address indexed validator,
+        bool approved,
+        uint256 newScore
     );
     
-    event ReputationUpdated(
-        address user, 
-        uint newReputation,
-        string reason
+    event EntryStatusChanged(
+        uint256 indexed entryId,
+        EntryStatus oldStatus,
+        EntryStatus newStatus
     );
     
     // Modifiers
-    modifier validEntryId(uint entryId) {
+    modifier onlyValidator() {
+        require(validatorManager.isValidator(msg.sender), "Not a validator");
+        _;
+    }
+    
+    modifier validEntryId(uint256 entryId) {
         require(entryId < entries.length, "Invalid entry ID");
         _;
     }
     
-    modifier onlyValidator(uint entryId) {
-        require(isValidator(entryId, msg.sender), "Not a validator for this entry");
-        _;
+    // Constructor
+    constructor(address _validatorManager, address _culturalToken) {
+        validatorManager = ValidatorManager(_validatorManager);
+        culturalToken = CulturalToken(_culturalToken);
     }
     
     /**
-     * @dev Submit a new cultural knowledge entry
-     * @param cid IPFS content identifier
-     * @param license Content license string
+     * @dev Submit a new cultural entry
      */
     function submitEntry(
-        bytes32 cid, 
-        string calldata license
-    ) external returns (uint) {
+        bytes32 cid,
+        LicenseType license,
+        string calldata language,
+        string calldata community,
+        bytes32[] calldata atomHashes
+    ) external returns (uint256) {
         require(cid != bytes32(0), "Invalid CID");
-        require(bytes(license).length > 0, "License required");
+        require(cidToEntryId[cid] == 0, "CID already exists");
         
-        entries.push(Entry({
+        uint256 entryId = entries.length;
+        
+        CulturalEntry memory newEntry = CulturalEntry({
             cid: cid,
             author: msg.sender,
             timestamp: block.timestamp,
             license: license,
-            status: 0
-        }));
+            status: EntryStatus.Pending,
+            language: language,
+            community: community,
+            validationScore: 0,
+            atomHashes: atomHashes
+        });
         
-        uint entryId = entries.length - 1;
+        entries.push(newEntry);
+        cidToEntryId[cid] = entryId;
+        authorEntries[msg.sender].push(entryId);
         
-        emit EntrySubmitted(entryId, cid, msg.sender, license);
+        // Mint initial cultural tokens for submission
+        culturalToken.mintCulturalTokens(msg.sender, 10);
         
-        // Auto-add submitter as initial validator
-        validators[entryId].push(msg.sender);
+        emit EntrySubmitted(
+            entryId,
+            cid,
+            msg.sender,
+            license,
+            language,
+            community
+        );
         
         return entryId;
     }
     
     /**
-     * @dev Validate or reject an entry
-     * @param entryId ID of the entry to validate
-     * @param approve True to approve, false to reject
-     * @param notes Reason for decision
+     * @dev Validate a cultural entry
      */
     function validateEntry(
-        uint entryId, 
-        bool approve, 
+        uint256 entryId,
+        bool approve,
         string calldata notes
-    ) external validEntryId(entryId) onlyValidator(entryId) {
-        Entry storage entry = entries[entryId];
+    ) external onlyValidator validEntryId(entryId) {
+        CulturalEntry storage entry = entries[entryId];
+        require(!hasValidated[entryId][msg.sender], "Already validated");
+        require(entry.status == EntryStatus.Pending, "Entry not pending");
         
-        require(entry.status == 0, "Entry already processed");
+        hasValidated[entryId][msg.sender] = true;
+        entryValidators[entryId].push(msg.sender);
         
         if (approve) {
-            entry.status = 1;
-            // Increase reputation for author and validator
-            reputation[entry.author] += 10;
-            reputation[msg.sender] += 5;
-            
-            emit ReputationUpdated(entry.author, reputation[entry.author], "Entry validated");
-            emit ReputationUpdated(msg.sender, reputation[msg.sender], "Successful validation");
+            entry.validationScore++;
         } else {
-            entry.status = 2;
-            // Decrease reputation for invalid submissions
-            if (reputation[entry.author] > 5) {
-                reputation[entry.author] -= 5;
-                emit ReputationUpdated(entry.author, reputation[entry.author], "Entry rejected");
-            }
+            entry.validationScore = entry.validationScore > 0 ? entry.validationScore - 1 : 0;
         }
         
-        validators[entryId].push(msg.sender);
+        // Check if entry reaches validation threshold
+        if (entry.validationScore >= validatorManager.getValidationThreshold()) {
+            EntryStatus oldStatus = entry.status;
+            entry.status = EntryStatus.Validated;
+            emit EntryStatusChanged(entryId, oldStatus, EntryStatus.Validated);
+            
+            // Reward author and validators
+            culturalToken.mintCulturalTokens(entry.author, 50);
+            culturalToken.mintCulturalTokens(msg.sender, 5);
+        }
         
-        emit EntryValidated(entryId, approve, msg.sender, notes);
+        emit EntryValidated(entryId, msg.sender, approve, entry.validationScore);
     }
     
     /**
-     * @dev Add a validator for an entry
-     * @param entryId Entry ID
-     * @param validator Validator address
+     * @dev Update entry status (admin function)
      */
-    function addValidator(
-        uint entryId, 
-        address validator
+    function updateEntryStatus(
+        uint256 entryId,
+        EntryStatus newStatus
     ) external validEntryId(entryId) {
-        require(!isValidator(entryId, validator), "Already a validator");
-        validators[entryId].push(validator);
+        require(
+            validatorManager.isAdmin(msg.sender),
+            "Only admin can update status"
+        );
+        
+        CulturalEntry storage entry = entries[entryId];
+        EntryStatus oldStatus = entry.status;
+        entry.status = newStatus;
+        
+        emit EntryStatusChanged(entryId, oldStatus, newStatus);
     }
     
     /**
      * @dev Get entry details
-     * @param entryId Entry ID
      */
     function getEntry(
-        uint entryId
-    ) external view validEntryId(entryId) returns (
-        bytes32 cid,
-        address author,
-        uint256 timestamp,
-        string memory license,
-        uint8 status,
-        address[] memory entryValidators
-    ) {
-        Entry memory entry = entries[entryId];
-        return (
-            entry.cid,
-            entry.author,
-            entry.timestamp,
-            entry.license,
-            entry.status,
-            validators[entryId]
-        );
+        uint256 entryId
+    ) external view validEntryId(entryId) returns (CulturalEntry memory) {
+        return entries[entryId];
     }
     
     /**
-     * @dev Check if address is validator for entry
-     * @param entryId Entry ID
-     * @param validator Address to check
+     * @dev Get validators for an entry
      */
-    function isValidator(
-        uint entryId, 
-        address validator
-    ) public view validEntryId(entryId) returns (bool) {
-        address[] memory entryValidators = validators[entryId];
-        for (uint i = 0; i < entryValidators.length; i++) {
-            if (entryValidators[i] == validator) {
-                return true;
-            }
-        }
-        return false;
+    function getEntryValidators(
+        uint256 entryId
+    ) external view validEntryId(entryId) returns (address[] memory) {
+        return entryValidators[entryId];
     }
     
     /**
-     * @dev Get total entry count
+     * @dev Get entries by author
      */
-    function getEntryCount() external view returns (uint) {
+    function getAuthorEntries(
+        address author
+    ) external view returns (uint256[] memory) {
+        return authorEntries[author];
+    }
+    
+    /**
+     * @dev Get total entries count
+     */
+    function getTotalEntries() external view returns (uint256) {
         return entries.length;
     }
     
     /**
-     * @dev Get entries by status
-     * @param status Status to filter by
-     * @param limit Maximum number of entries to return
+     * @dev Check if validator has validated an entry
      */
-    function getEntriesByStatus(
-        uint8 status, 
-        uint limit
-    ) external view returns (uint[] memory) {
-        uint count = 0;
-        uint[] memory result = new uint[](limit);
-        
-        for (uint i = 0; i < entries.length && count < limit; i++) {
-            if (entries[i].status == status) {
-                result[count] = i;
-                count++;
-            }
-        }
-        
-        // Resize array to actual count
-        uint[] memory finalResult = new uint[](count);
-        for (uint j = 0; j < count; j++) {
-            finalResult[j] = result[j];
-        }
-        
-        return finalResult;
-    }
-    
-    /**
-     * @dev Get user's reputation score
-     * @param user Address to check
-     */
-    function getReputation(address user) external view returns (uint) {
-        return reputation[user];
+    function hasValidatorApproved(
+        uint256 entryId,
+        address validator
+    ) external view validEntryId(entryId) returns (bool) {
+        return hasValidated[entryId][validator];
     }
 }

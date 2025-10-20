@@ -1,9 +1,28 @@
+"""Ingest Agent
+
+Handles incoming submission jobs by downloading media from IPFS, invoking the
+transcription flow, and updating the backend with results. This agent is part
+of the AfriVerse services responsible for cultural knowledge ingestion.
+
+Env:
+- BACKEND_URL: Base URL of AfriVerse backend API (default http://localhost:4000)
+"""
+
 from uagents import Agent, Bureau, Context, Model
 import requests
 import json
 import os
 
 class IngestJob(Model):
+    """Message model: describes a unit of ingestion work.
+
+    Attributes:
+        entry_id: Backend entry identifier.
+        cid: IPFS content identifier for the uploaded media.
+        filename: Original filename (for metadata/logging).
+        language: Preferred transcription language code.
+        content_type: Media type (e.g., 'audio').
+    """
     entry_id: int
     cid: str
     filename: str
@@ -11,12 +30,14 @@ class IngestJob(Model):
     content_type: str = "audio"
 
 class IngestResult(Model):
+    """Message model: ingestion result returned to sender."""
     entry_id: int
     success: bool
     transcript: str = None
     error: str = None
 
 class IngestAgent(Agent):
+    """Agent that orchestrates download->transcribe->update backend for entries."""
     def __init__(self):
         super().__init__(
             name="ingest_agent",
@@ -27,6 +48,7 @@ class IngestAgent(Agent):
         
     @self.on_message(model=IngestJob)
     async def handle_ingest_job(self, ctx: Context, sender: str, job: IngestJob):
+        """Process an ingestion job and reply with an `IngestResult`."""
         ctx.logger.info(f"Received ingest job for entry {job.entry_id}")
         
         try:
@@ -57,14 +79,14 @@ class IngestAgent(Agent):
             await ctx.send(sender, result)
     
     async def download_from_ipfs(self, cid: str) -> bytes:
-        """Download file from IPFS"""
+        """Download file bytes from IPFS via Pinata gateway."""
         pinata_gateway = f"https://gateway.pinata.cloud/ipfs/{cid}"
         response = requests.get(pinata_gateway)
         response.raise_for_status()
         return response.content
     
     async def transcribe_audio(self, audio_data: bytes, language: str) -> str:
-        """Send audio to transcription service"""
+        """Send audio to backend transcription endpoint and return transcript text."""
         transcription_url = f"{self.backend_url}/api/transcribe"
         
         files = {'file': ('audio.wav', audio_data, 'audio/wav')}
@@ -77,7 +99,7 @@ class IngestAgent(Agent):
         return result.get('transcript', '')
     
     async def update_backend(self, entry_id: int, transcript: str):
-        """Update backend with transcription result"""
+        """Update backend entry with transcription result and status."""
         update_url = f"{self.backend_url}/api/entries/{entry_id}/transcript"
         
         data = {

@@ -1,3 +1,15 @@
+"""Transcribe Agent
+
+Downloads audio from IPFS, performs speech-to-text using OpenAI Whisper with a
+HuggingFace fallback, updates the backend with results, and returns a
+`TranscribeResult`. Includes a periodic health check.
+
+Env:
+- BACKEND_URL: Backend base URL (default http://localhost:4000)
+- OPENAI_API_KEY: OpenAI key for Whisper
+- HUGGINGFACE_TOKEN: HF inference token
+"""
+
 from uagents import Agent, Bureau, Context, Model
 import requests
 import os
@@ -5,12 +17,14 @@ import tempfile
 import json
 
 class TranscribeJob(Model):
+    """Message model describing a transcription task."""
     entry_id: int
     cid: str
     language: str = "sw"
     content_type: str = "audio"
 
 class TranscribeResult(Model):
+    """Message model containing transcription outcome and metadata."""
     entry_id: int
     success: bool
     transcript: str = None
@@ -19,6 +33,7 @@ class TranscribeResult(Model):
     error: str = None
 
 class TranscribeAgent(Agent):
+    """Agent that downloads audio, transcribes it, and updates backend."""
     def __init__(self):
         super().__init__(
             name="transcribe_agent",
@@ -30,6 +45,7 @@ class TranscribeAgent(Agent):
         
     @self.on_message(model=TranscribeJob)
     async def handle_transcribe_job(self, ctx: Context, sender: str, job: TranscribeJob):
+        """Process an audio transcription job and respond with `TranscribeResult`."""
         ctx.logger.info(f"Processing transcription for entry {job.entry_id}")
         
         try:
@@ -67,14 +83,14 @@ class TranscribeAgent(Agent):
             await ctx.send(sender, result)
     
     async def download_from_ipfs(self, cid: str) -> bytes:
-        """Download file from IPFS"""
+        """Download file bytes from IPFS via Pinata gateway."""
         pinata_gateway = f"https://gateway.pinata.cloud/ipfs/{cid}"
         response = requests.get(pinata_gateway)
         response.raise_for_status()
         return response.content
     
     async def transcribe_audio(self, audio_data: bytes, language: str) -> dict:
-        """Transcribe audio using OpenAI Whisper"""
+        """Transcribe audio, trying OpenAI Whisper then falling back to HF."""
         try:
             # Try OpenAI Whisper first
             return await self.transcribe_with_openai(audio_data, language)
@@ -84,7 +100,7 @@ class TranscribeAgent(Agent):
             return await self.transcribe_with_huggingface(audio_data, language)
     
     async def transcribe_with_openai(self, audio_data: bytes, language: str) -> dict:
-        """Transcribe using OpenAI Whisper API"""
+        """Transcribe audio buffer using OpenAI Whisper API."""
         # Save audio to temporary file
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
             temp_file.write(audio_data)
@@ -114,7 +130,7 @@ class TranscribeAgent(Agent):
             os.unlink(temp_path)
     
     async def transcribe_with_huggingface(self, audio_data: bytes, language: str) -> dict:
-        """Transcribe using HuggingFace model"""
+        """Transcribe using a HuggingFace wav2vec2 model via Inference API."""
         try:
             # Use a pre-trained speech recognition model
             API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-xlsr-53"
@@ -135,7 +151,7 @@ class TranscribeAgent(Agent):
             raise Exception(f"HuggingFace transcription failed: {str(e)}")
     
     async def update_backend(self, entry_id: int, transcript: str, language: str, duration: float = None):
-        """Update backend with transcription result"""
+        """PATCH transcription results and status to backend entry."""
         update_url = f"{self.backend_url}/api/submit/{entry_id}/transcript"
         
         data = {
@@ -152,7 +168,7 @@ class TranscribeAgent(Agent):
     
     @self.on_interval(period=60.0)
     async def health_check(self, ctx: Context):
-        """Regular health check"""
+        """Perform a periodic no-op to verify dependencies are reachable."""
         try:
             # Test transcription with a small audio sample
             test_audio = b''  # Empty for now, just check connectivity
