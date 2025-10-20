@@ -1,0 +1,111 @@
+// Prisma schema for AfriVerse database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Entry {
+  id                Int        @id @default(autoincrement())
+  cid               String     @unique // IPFS content identifier
+  title             String?
+  submitter         String     // Wallet address or anonymous identifier
+  language          String     @default("sw")
+  license           String     @default("CC-BY-NC-4.0")
+  status            String     @default("pending") // pending, transcribed, symbolized, validated, rejected, anchored
+  transcript        String?
+  atoms             Json?      // Stored as JSON array of MeTTa atoms
+  metadata          Json?      // Additional metadata
+  community         String     @default("general")
+  blockchainTx      String?    // Blockchain transaction hash
+  blockchainEntryId Int?       // Entry ID on blockchain
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  validations Validation[]
+  
+  // Indexes
+  @@index([status])
+  @@index([community])
+  @@index([language])
+  @@index([submitter])
+  @@index([createdAt])
+  @@index([status, community])
+}
+
+model Validation {
+  id        Int      @id @default(autoincrement())
+  entryId   Int
+  validator String   // Wallet address or validator identifier
+  decision  String   // approved, rejected
+  notes     String?
+  createdAt DateTime @default(now())
+  
+  // Relations
+  entry Entry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  
+  // Indexes
+  @@index([entryId])
+  @@index([validator])
+  @@index([decision])
+  @@index([createdAt])
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  address      String   @unique // Wallet address
+  reputation   Int      @default(0)
+  role         String   @default("user") // user, validator, admin
+  communities  String[] // Communities user belongs to
+  
+  // Profile
+  displayName  String?
+  avatar       String?
+  bio          String?
+  
+  // Timestamps
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Indexes
+  @@index([role])
+  @@index([reputation])
+}
+
+model Community {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  language    String   @default("sw")
+  region      String?
+  
+  // Governance
+  validators  String[] // Wallet addresses of validators
+  rules       Json?    // Community-specific validation rules
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Indexes
+  @@index([language])
+  @@index([region])
+}
+
+// Cache for MeTTa queries and inferences
+model Cache {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     Json
+  expiresAt DateTime?
+  
+  // Indexes
+  @@index([expiresAt])
+}
