@@ -3,7 +3,18 @@ const prisma = new PrismaClient();
 const CacheService = require('./cacheService');
 const logger = require('../utils/logger');
 
+/**
+ * CommunityService
+ *
+ * Manages AfriVerse communities, including creation, updates, validator lists,
+ * and retrieval with Redis cache acceleration. Provides helper checks for
+ * community-specific rules validation used during submission workflows.
+ */
 class CommunityService {
+  /**
+   * Create a new community document.
+   * @param {{name:string, description?:string, language?:string, region?:string, validators?:string[], rules?:object}} data
+   */
   async createCommunity(data) {
     try {
       const community = await prisma.community.create({
@@ -28,6 +39,10 @@ class CommunityService {
     }
   }
 
+  /**
+   * Retrieve a community by unique name with cache.
+   * @param {string} name
+   */
   async getCommunity(name) {
     try {
       const cacheKey = `community:${name}`;
@@ -52,6 +67,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * List all communities with cache.
+   */
   async getAllCommunities() {
     try {
       const cacheKey = 'communities:all';
@@ -73,6 +91,11 @@ class CommunityService {
     }
   }
 
+  /**
+   * Update community metadata and clear caches.
+   * @param {string} name
+   * @param {object} data
+   */
   async updateCommunity(name, data) {
     try {
       const community = await prisma.community.update({
@@ -99,6 +122,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Add a validator address to community.
+   */
   async addValidator(communityName, validatorAddress) {
     try {
       const community = await prisma.community.findUnique({
@@ -131,6 +157,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Remove a validator address from community.
+   */
   async removeValidator(communityName, validatorAddress) {
     try {
       const community = await prisma.community.findUnique({
@@ -162,6 +191,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Get cached validator list for a community.
+   */
   async getCommunityValidators(communityName) {
     try {
       const cacheKey = `community:${communityName}:validators`;
@@ -186,6 +218,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Compute stats for entries and validations scoped to a community (cached).
+   */
   async getCommunityStats(communityName) {
     try {
       const cacheKey = `community:${communityName}:stats`;
@@ -233,6 +268,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Validate an entry against community rule set.
+   */
   async validateCommunityRules(entry, communityName) {
     try {
       const community = await this.getCommunity(communityName);
@@ -288,6 +326,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Search communities by text query and optional filters.
+   */
   async searchCommunities(query, filters = {}) {
     try {
       const where = {};
@@ -321,6 +362,9 @@ class CommunityService {
     }
   }
 
+  /**
+   * Delete a community if no entries exist.
+   */
   async deleteCommunity(name) {
     try {
       // Check if community has entries

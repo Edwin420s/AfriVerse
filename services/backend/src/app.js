@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
+const healthRoutes = require('./routes/health');
 
 // Import routes
 const submitRoutes = require('./routes/submit');
@@ -25,6 +26,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+app.use('/api/health', healthRoutes);
 
 // Rate limiting
 const limiter = rateLimit({

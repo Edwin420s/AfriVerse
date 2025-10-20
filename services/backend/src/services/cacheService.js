@@ -2,6 +2,14 @@ const Redis = require('ioredis');
 const config = require('../config');
 const logger = require('../utils/logger');
 
+/**
+ * CacheService
+ *
+ * Thin wrapper around Redis providing JSON-safe get/set and common helpers
+ * used by AfriVerse for query caching, atoms caching and validation states.
+ *
+ * Configuration is loaded from `src/config/index.js` (e.g., `config.redis.url`).
+ */
 class CacheService {
   constructor() {
     this.redis = new Redis(config.redis.url, config.redis.options);
@@ -16,6 +24,11 @@ class CacheService {
     });
   }
 
+  /**
+   * Get a value by key and JSON-deserialize it.
+   * @param {string} key
+   * @returns {Promise<any|null>}
+   */
   async get(key) {
     try {
       const value = await this.redis.get(key);
@@ -26,6 +39,13 @@ class CacheService {
     }
   }
 
+  /**
+   * Set a value by key with optional TTL; value is JSON-serialized.
+   * @param {string} key
+   * @param {any} value
+   * @param {number} [ttl=this.defaultTTL] - seconds; 0 or negative disables TTL
+   * @returns {Promise<boolean>}
+   */
   async set(key, value, ttl = this.defaultTTL) {
     try {
       const serializedValue = JSON.stringify(value);
@@ -41,6 +61,11 @@ class CacheService {
     }
   }
 
+  /**
+   * Delete a key.
+   * @param {string} key
+   * @returns {Promise<boolean>}
+   */
   async del(key) {
     try {
       await this.redis.del(key);
@@ -51,6 +76,11 @@ class CacheService {
     }
   }
 
+  /**
+   * Check if a key exists.
+   * @param {string} key
+   * @returns {Promise<boolean>}
+   */
   async exists(key) {
     try {
       const result = await this.redis.exists(key);
@@ -61,99 +91,10 @@ class CacheService {
     }
   }
 
-  async incr(key) {
-    try {
-      return await this.redis.incr(key);
-    } catch (error) {
-      logger.error('Cache increment error:', error);
-      return null;
-    }
-  }
-
-  async decr(key) {
-    try {
-      return await this.redis.decr(key);
-    } catch (error) {
-      logger.error('Cache decrement error:', error);
-      return null;
-    }
-  }
-
-  async hset(key, field, value) {
-    try {
-      const serializedValue = JSON.stringify(value);
-      await this.redis.hset(key, field, serializedValue);
-      return true;
-    } catch (error) {
-      logger.error('Cache hset error:', error);
-      return false;
-    }
-  }
-
-  async hget(key, field) {
-    try {
-      const value = await this.redis.hget(key, field);
-      return value ? JSON.parse(value) : null;
-    } catch (error) {
-      logger.error('Cache hget error:', error);
-      return null;
-    }
-  }
-
-  async hgetall(key) {
-    try {
-      const values = await this.redis.hgetall(key);
-      const result = {};
-      
-      for (const [field, value] of Object.entries(values)) {
-        result[field] = JSON.parse(value);
-      }
-      
-      return result;
-    } catch (error) {
-      logger.error('Cache hgetall error:', error);
-      return {};
-    }
-  }
-
-  async expire(key, ttl) {
-    try {
-      await this.redis.expire(key, ttl);
-      return true;
-    } catch (error) {
-      logger.error('Cache expire error:', error);
-      return false;
-    }
-  }
-
-  async ttl(key) {
-    try {
-      return await this.redis.ttl(key);
-    } catch (error) {
-      logger.error('Cache TTL error:', error);
-      return -2; // Key doesn't exist
-    }
-  }
-
-  async keys(pattern) {
-    try {
-      return await this.redis.keys(pattern);
-    } catch (error) {
-      logger.error('Cache keys error:', error);
-      return [];
-    }
-  }
-
-  async flush() {
-    try {
-      await this.redis.flushdb();
-      return true;
-    } catch (error) {
-      logger.error('Cache flush error:', error);
-      return false;
-    }
-  }
-
+  /**
+   * Health check for Redis connectivity.
+   * @returns {Promise<{status: 'healthy'|'unhealthy', message: string}>}
+   */
   async health() {
     try {
       await this.redis.ping();
@@ -164,6 +105,12 @@ class CacheService {
   }
 
   // Cache-specific methods for AfriVerse
+  /**
+   * Cache a query result with a normalized key derived from the query payload.
+   * @param {object} query
+   * @param {any} result
+   * @param {number} [ttl=1800]
+   */
   async cacheQueryResult(query, result, ttl = 1800) {
     const key = `query:${this.hashQuery(query)}`;
     return await this.set(key, {
@@ -173,6 +120,11 @@ class CacheService {
     }, ttl);
   }
 
+  /**
+   * Retrieve a cached query result if still fresh.
+   * @param {object} query
+   * @returns {Promise<any|null>}
+   */
   async getCachedQuery(query) {
     const key = `query:${this.hashQuery(query)}`;
     const cached = await this.get(key);
@@ -184,6 +136,12 @@ class CacheService {
     return null;
   }
 
+  /**
+   * Cache MeTTa atoms for an entry.
+   * @param {number|string} entryId
+   * @param {any[]} atoms
+   * @param {number} [ttl=86400]
+   */
   async cacheAtoms(entryId, atoms, ttl = 86400) {
     const key = `atoms:${entryId}`;
     return await this.set(key, {
@@ -192,17 +150,33 @@ class CacheService {
     }, ttl);
   }
 
+  /**
+   * Retrieve cached atoms for an entry.
+   * @param {number|string} entryId
+   * @returns {Promise<any[]|null>}
+   */
   async getCachedAtoms(entryId) {
     const key = `atoms:${entryId}`;
     const cached = await this.get(key);
     return cached ? cached.atoms : null;
   }
 
+  /**
+   * Cache validation metadata for an entry.
+   * @param {number|string} entryId
+   * @param {object} validation
+   * @param {number} [ttl=3600]
+   */
   async cacheValidation(entryId, validation, ttl = 3600) {
     const key = `validation:${entryId}`;
     return await this.set(key, validation, ttl);
   }
 
+  /**
+   * Retrieve cached validation metadata for an entry.
+   * @param {number|string} entryId
+   * @returns {Promise<object|null>}
+   */
   async getCachedValidation(entryId) {
     const key = `validation:${entryId}`;
     return await this.get(key);

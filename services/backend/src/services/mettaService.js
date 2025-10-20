@@ -1,10 +1,25 @@
 const axios = require('axios');
 
+/**
+ * MeTTaService
+ *
+ * Provides HTTP client helpers to interact with a MeTTa runtime for
+ * evaluating expressions, adding/querying atoms, and simple fallback
+ * behaviors when the runtime is unavailable (MVP in-memory store).
+ *
+ * Env:
+ * - METTA_API_URL: base URL to the MeTTa server (default http://localhost:8080)
+ */
 class MeTTaService {
   constructor() {
     this.mettaEndpoint = process.env.METTA_API_URL || 'http://localhost:8080';
   }
 
+  /**
+   * Evaluate a MeTTa expression.
+   * @param {string} expression
+   * @returns {Promise<{success:boolean,result:any,atoms?:any[],error?:string}>}
+   */
   async evaluateExpression(expression) {
     try {
       const response = await axios.post(`${this.mettaEndpoint}/evaluate`, {
@@ -26,6 +41,11 @@ class MeTTaService {
     }
   }
 
+  /**
+   * Add atoms to the MeTTa knowledge base.
+   * Falls back to in-memory store if server not reachable.
+   * @param {string[]} atoms
+   */
   async addAtoms(atoms) {
     try {
       const response = await axios.post(`${this.mettaEndpoint}/atoms`, {
@@ -45,6 +65,11 @@ class MeTTaService {
     }
   }
 
+  /**
+   * Query atoms using a MeTTa pattern.
+   * Falls back to string-contains matching in memory for MVP.
+   * @param {string} pattern
+   */
   async queryAtoms(pattern) {
     try {
       const response = await axios.post(`${this.mettaEndpoint}/query`, {
@@ -98,6 +123,11 @@ class MeTTaService {
     };
   }
 
+  /**
+   * Validate MeTTa expression syntax.
+   * @param {string} expression
+   * @returns {{isValid:boolean,checks:{hasParentheses:boolean,hasContent:boolean,balancedParentheses:boolean}}}
+   */
   validateMeTTaSyntax(expression) {
     const syntaxChecks = {
       hasParentheses: expression.startsWith('(') && expression.endsWith(')'),
@@ -123,6 +153,12 @@ class MeTTaService {
     return balance === 0;
   }
 
+  /**
+   * Generate inferences based on atoms and query.
+   * @param {string[]} atoms
+   * @param {string} query
+   * @returns {{type:string,plant:string,condition:string,confidence:number,source:string}[]}
+   */
   generateInference(atoms, query) {
     // Simple inference engine for demo
     const inferences = [];
