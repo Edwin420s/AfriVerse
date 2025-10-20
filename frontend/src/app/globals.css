@@ -4,6 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
+/* Import custom styles */
+@import '../styles/animations.css';
+@import '../styles/utilities.css';
+
 :root {
   --foreground-rgb: 238, 238, 238;
   --background-start-rgb: 11, 19, 43;
