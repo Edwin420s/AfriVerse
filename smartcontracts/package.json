@@ -1,0 +1,50 @@
+{
+  "name": "afriverse-smart-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for AfriVerse - Preserving African Indigenous Knowledge through AGI",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
+    "deploy": "npx hardhat run scripts/deploy.js",
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network lineaTestnet",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network linea",
+    "verify": "npx hardhat run scripts/verify.js",
+    "verify:testnet": "npx hardhat run scripts/verify.js --network lineaTestnet",
+    "verify:mainnet": "npx hardhat run scripts/verify.js --network linea",
+    "seed": "npx hardhat run scripts/seed_validators.js",
+    "seed:testnet": "npx hardhat run scripts/seed_validators.js --network lineaTestnet",
+    "console": "npx hardhat console",
+    "lint": "npx solhint 'contracts/**/*.sol'",
+    "lint:fix": "npx solhint 'contracts/**/*.sol' --fix",
+    "gas": "npx hardhat gas-reporter"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "solidity",
+    "cultural-preservation",
+    "agi",
+    "africa",
+    "knowledge-graph"
+  ],
+  "author": "AfriVerse Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3",
+    "chai": "^4.3.10",
+    "dotenv": "^16.3.1",
+    "ethereum-waffle": "^4.0.10",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.17.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solhint": "^3.4.1",
+    "solidity-coverage": "^0.8.5"
+  },
+  "dependencies": {}
+}
