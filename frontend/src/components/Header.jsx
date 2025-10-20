@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, Menu, X, Users, Book, Shield, User } from 'lucide-react'
+import WalletConnect from './WalletConnect'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -23,12 +24,14 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-3"
           >
-            <div className="gold-gradient p-2 rounded-lg">
-              <Brain className="w-6 h-6 text-primary-navy" />
-            </div>
-            <span className="text-xl font-cormorant font-bold gradient-text">
-              AfriVerse
-            </span>
+            <a href="/" className="flex items-center space-x-3">
+              <div className="gold-gradient p-2 rounded-lg">
+                <Brain className="w-6 h-6 text-primary-navy" />
+              </div>
+              <span className="text-xl font-cormorant font-bold gradient-text">
+                AfriVerse
+              </span>
+            </a>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -46,14 +49,21 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Mobile menu button */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            className="md:hidden text-primary-white"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </motion.button>
+          {/* Wallet & Mobile menu */}
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:block">
+              <WalletConnect />
+            </div>
+
+            {/* Mobile menu button */}
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              className="md:hidden text-primary-white"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </motion.button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -77,6 +87,9 @@ export default function Header() {
                     <span>{item.name}</span>
                   </motion.a>
                 ))}
+                <div className="pt-4 border-t border-primary-cyan/20">
+                  <WalletConnect />
+                </div>
               </div>
             </motion.div>
           )}
