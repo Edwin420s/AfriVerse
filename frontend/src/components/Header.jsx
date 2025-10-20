@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, Menu, X, Users, Book, Shield, User } from 'lucide-react'
 import WalletConnect from './WalletConnect'
+import NotificationBell from './NotificationBell'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -51,7 +52,8 @@ export default function Header() {
 
           {/* Wallet & Mobile menu */}
           <div className="flex items-center space-x-4">
-            <div className="hidden md:block">
+            <div className="hidden md:flex items-center space-x-4">
+              <NotificationBell />
               <WalletConnect />
             </div>
 
@@ -87,7 +89,8 @@ export default function Header() {
                     <span>{item.name}</span>
                   </motion.a>
                 ))}
-                <div className="pt-4 border-t border-primary-cyan/20">
+                <div className="pt-4 border-t border-primary-cyan/20 flex items-center justify-between">
+                  <NotificationBell />
                   <WalletConnect />
                 </div>
               </div>
