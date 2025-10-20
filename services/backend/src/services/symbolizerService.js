@@ -1,5 +1,15 @@
 const { OpenAI } = require('openai');
 
+/**
+ * SymbolizerService
+ *
+ * Uses an LLM to convert natural language transcripts into MeTTa-style atoms
+ * for symbolic knowledge representation. Falls back to simple heuristic
+ * extraction when the LLM is unavailable.
+ *
+ * Env:
+ * - OPENAI_API_KEY: API key for OpenAI
+ */
 class SymbolizerService {
   constructor() {
     this.openai = new OpenAI({
@@ -7,6 +17,12 @@ class SymbolizerService {
     });
   }
 
+  /**
+   * Extract MeTTa atoms from a transcript using an LLM.
+   * @param {string} transcript - Natural language transcript content.
+   * @param {object} context - Optional contextual metadata.
+   * @returns {Promise<{atoms:string[], rawResponse:string, atomCount:number}>}
+   */
   async extractAtoms(transcript, context = {}) {
     const prompt = this.createSymbolizerPrompt(transcript, context);
     
@@ -35,6 +51,12 @@ class SymbolizerService {
     }
   }
 
+  /**
+   * Construct the prompt used to instruct the LLM to output valid MeTTa atoms.
+   * @param {string} transcript
+   * @param {object} context
+   * @returns {string}
+   */
   createSymbolizerPrompt(transcript, context) {
     return `
 TRANSCRIPT: "${transcript}"
@@ -61,6 +83,11 @@ Return ONLY the MeTTa atoms, no explanations.
 `;
   }
 
+  /**
+   * Parse the LLM response into a list of valid atom strings.
+   * @param {string} response
+   * @returns {{atoms:string[], rawResponse:string, atomCount:number}}
+   */
   parseSymbolizerResponse(response) {
     const atoms = [];
     const lines = response.split('\n').filter(line => line.trim());
@@ -78,6 +105,11 @@ Return ONLY the MeTTa atoms, no explanations.
     };
   }
 
+  /**
+   * Heuristic fallback extraction when LLM is unavailable.
+   * @param {string} transcript
+   * @returns {{atoms:string[], rawResponse:string, atomCount:number}}
+   */
   fallbackSymbolizer(transcript) {
     // Simple rule-based fallback for critical terms
     const commonPlants = ['aloe', 'neem', 'moringa', 'lemongrass'];
@@ -100,6 +132,11 @@ Return ONLY the MeTTa atoms, no explanations.
     };
   }
 
+  /**
+   * Validate basic MeTTa atom syntax and return valid/invalid sets.
+   * @param {string[]} atoms
+   * @returns {{valid:string[], invalid:string[], validationScore:number}}
+   */
   validateAtoms(atoms) {
     const validAtoms = atoms.filter(atom => {
       return atom.startsWith('(') && 

@@ -1,6 +1,17 @@
 const axios = require('axios');
 const { OpenAI } = require('openai');
 
+/**
+ * TranscriptionService
+ *
+ * Provides audio->text transcription using OpenAI Whisper with a
+ * HuggingFace fallback for resilience. Maps common language codes
+ * for African languages (sw, am, yo, ig, ha) and English.
+ *
+ * Env:
+ * - OPENAI_API_KEY: API key for OpenAI Whisper
+ * - HUGGINGFACE_TOKEN: Token for HuggingFace Inference API
+ */
 class TranscriptionService {
   constructor() {
     this.openai = new OpenAI({
@@ -8,6 +19,13 @@ class TranscriptionService {
     });
   }
 
+  /**
+   * Transcribe an audio buffer to text.
+   * Tries OpenAI Whisper first; falls back to HuggingFace model.
+   * @param {Buffer} buffer - Audio bytes (wav recommended)
+   * @param {string} [language='sw'] - ISO-ish language code
+   * @returns {Promise<{text:string, language:string, duration:number|null, words:any[]}>}
+   */
   async transcribeAudio(buffer, language = 'sw') {
     try {
       // For MVP, using OpenAI Whisper
@@ -32,6 +50,12 @@ class TranscriptionService {
     }
   }
 
+  /**
+   * HuggingFace fallback transcription using wav2vec2 model.
+   * @param {Buffer} buffer
+   * @param {string} language
+   * @returns {Promise<{text:string, language:string, duration:null, words:any[]}>}
+   */
   async transcribeWithHuggingFace(buffer, language) {
     try {
       const response = await axios.post(
@@ -56,6 +80,11 @@ class TranscriptionService {
     }
   }
 
+  /**
+   * Map short language codes to model-supported codes.
+   * @param {string} code
+   * @returns {string}
+   */
   mapLanguageCode(code) {
     const languageMap = {
       'sw': 'sw',    // Swahili
