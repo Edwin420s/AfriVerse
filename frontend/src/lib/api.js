@@ -161,6 +161,81 @@ export const api = {
       headers: getAuthHeaders()
     })
     return handleResponse(response)
+  },
+
+  // Communities endpoints
+  async getCommunities(filters = {}) {
+    const queryParams = new URLSearchParams(filters).toString()
+    const response = await fetch(`${API_BASE_URL}/communities?${queryParams}`)
+    return handleResponse(response)
+  },
+
+  async getCommunity(id) {
+    const response = await fetch(`${API_BASE_URL}/communities/${id}`)
+    return handleResponse(response)
+  },
+
+  async joinCommunity(communityId) {
+    const response = await fetch(`${API_BASE_URL}/communities/${communityId}/join`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      }
+    })
+    return handleResponse(response)
+  },
+
+  // Languages endpoints
+  async getLanguages() {
+    const response = await fetch(`${API_BASE_URL}/languages`)
+    return handleResponse(response)
+  },
+
+  async getLanguageStats() {
+    const response = await fetch(`${API_BASE_URL}/languages/stats`)
+    return handleResponse(response)
+  },
+
+  // Cultural insights endpoints
+  async getCulturalInsights(filters = {}) {
+    const queryParams = new URLSearchParams(filters).toString()
+    const response = await fetch(`${API_BASE_URL}/insights?${queryParams}`)
+    return handleResponse(response)
+  },
+
+  async getCulturalTimeline() {
+    const response = await fetch(`${API_BASE_URL}/insights/timeline`)
+    return handleResponse(response)
+  },
+
+  async getKnowledgeGraph(entryId) {
+    const response = await fetch(`${API_BASE_URL}/insights/graph/${entryId}`)
+    return handleResponse(response)
+  },
+
+  // Notifications endpoints
+  async getNotifications() {
+    const response = await fetch(`${API_BASE_URL}/notifications`, {
+      headers: getAuthHeaders()
+    })
+    return handleResponse(response)
+  },
+
+  async markNotificationRead(notificationId) {
+    const response = await fetch(`${API_BASE_URL}/notifications/${notificationId}/read`, {
+      method: 'PATCH',
+      headers: getAuthHeaders()
+    })
+    return handleResponse(response)
+  },
+
+  async clearAllNotifications() {
+    const response = await fetch(`${API_BASE_URL}/notifications/clear`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    })
+    return handleResponse(response)
   }
 }
 
