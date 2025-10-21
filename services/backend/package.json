@@ -20,5 +20,16 @@
     "seed": "node prisma/seed.js",
     "clean": "rm -rf node_modules package-lock.json && npm install",
     "docs": "jsdoc -c jsdoc.json"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "clearMocks": true
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
   }
 }

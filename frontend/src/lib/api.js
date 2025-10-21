@@ -158,26 +158,33 @@ export const api = {
   // Validation endpoints
   async getPendingValidations(filters = {}) {
     const queryParams = new URLSearchParams(filters).toString()
-    const response = await fetch(`${API_BASE_URL}/validations/pending?${queryParams}`, {
+    const response = await fetch(`${API_BASE_URL}/validate/pending?${queryParams}`, {
       headers: getAuthHeaders()
     })
     return handleResponse(response)
   },
 
   async submitValidation(entryId, decision, notes) {
-    const response = await fetch(`${API_BASE_URL}/validations`, {
+    const response = await fetch(`${API_BASE_URL}/validate/${entryId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         ...getAuthHeaders()
       },
-      body: JSON.stringify({ entryId, decision, notes }),
+      body: JSON.stringify({ decision, notes }),
     })
     return handleResponse(response)
   },
 
-  async getValidationHistory() {
-    const response = await fetch(`${API_BASE_URL}/validations/history`, {
+  async getEntryValidations(entryId) {
+    const response = await fetch(`${API_BASE_URL}/validate/${entryId}/validations`, {
+      headers: getAuthHeaders()
+    })
+    return handleResponse(response)
+  },
+
+  async getValidatorStats(validator) {
+    const response = await fetch(`${API_BASE_URL}/validate/validator/${validator}/stats`, {
       headers: getAuthHeaders()
     })
     return handleResponse(response)

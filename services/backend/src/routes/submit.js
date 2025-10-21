@@ -1,6 +1,14 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
+const validate = require('../middleware/validate');
+const {
+  paramsEntryId,
+  updateTranscriptBody,
+  updateAtomsBody,
+  symbolizeBody,
+  transcribeBody
+} = require('../schemas/submitSchemas');
 const submitController = require('../controllers/submitController');
 
 // Configure multer for file uploads
@@ -33,15 +41,28 @@ router.post('/', upload.single('file'), submitController.submitEntry);
 router.get('/status/:entryId', submitController.getSubmissionStatus);
 
 // Update transcript (called by agents)
-router.patch('/:entryId/transcript', submitController.updateTranscript);
+router.patch('/:entryId/transcript',
+  validate({ params: paramsEntryId, body: updateTranscriptBody }),
+  submitController.updateTranscript
+);
 
 // Update atoms (called by agents)
-router.patch('/:entryId/atoms', submitController.updateAtoms);
+router.patch('/:entryId/atoms',
+  validate({ params: paramsEntryId, body: updateAtomsBody }),
+  submitController.updateAtoms
+);
 
 // Symbolize transcript (direct API)
-router.post('/symbolize', submitController.symbolizeTranscript);
+router.post('/symbolize',
+  validate({ body: symbolizeBody }),
+  submitController.symbolizeTranscript
+);
 
 // Transcribe audio file (direct API)
-router.post('/transcribe', upload.single('file'), submitController.transcribe);
+router.post('/transcribe',
+  upload.single('file'),
+  validate({ body: transcribeBody }),
+  submitController.transcribe
+);
 
 module.exports = router;

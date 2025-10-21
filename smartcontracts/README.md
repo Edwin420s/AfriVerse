@@ -59,7 +59,7 @@ ValidatorManager: 0x...
 
 ## License
 MIT 
-```
+
 
 ## 📊 **FINAL COMPLETENESS STATUS**
 
@@ -94,4 +94,4 @@ The AfriVerse smart contracts are now **100% complete** with:
 - **Full documentation** and configuration
 
 The project is ready for deployment on Linea testnet/mainnet and includes all features needed for the BGI25 Hackathon submission.
-```
+
