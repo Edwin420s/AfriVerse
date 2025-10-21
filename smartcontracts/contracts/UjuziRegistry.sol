@@ -44,6 +44,8 @@ contract UjuziRegistry is IUjuziRegistry {
     mapping(uint256 => address[]) public entryValidators;
     mapping(uint256 => mapping(address => bool)) public hasValidated;
     mapping(bytes32 => uint256) public cidToEntryId;
+    // Tracks if a CID has already been submitted to prevent duplicates
+    mapping(bytes32 => bool) public cidExists;
     mapping(address => uint256[]) public authorEntries;
     
     // Events
@@ -97,7 +99,7 @@ contract UjuziRegistry is IUjuziRegistry {
         bytes32[] calldata atomHashes
     ) external returns (uint256) {
         require(cid != bytes32(0), "Invalid CID");
-        require(cidToEntryId[cid] == 0, "CID already exists");
+        require(!cidExists[cid], "CID already exists");
         
         uint256 entryId = entries.length;
         
@@ -115,6 +117,7 @@ contract UjuziRegistry is IUjuziRegistry {
         
         entries.push(newEntry);
         cidToEntryId[cid] = entryId;
+        cidExists[cid] = true;
         authorEntries[msg.sender].push(entryId);
         
         // Mint initial cultural tokens for submission

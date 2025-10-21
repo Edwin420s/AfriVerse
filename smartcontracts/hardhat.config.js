@@ -1,5 +1,8 @@
+require("dotenv").config();
+require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
+require("@openzeppelin/hardhat-upgrades");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 
@@ -15,11 +18,11 @@ module.exports = {
   },
   networks: {
     linea: {
-      url: "https://rpc.linea.build",
+      url: process.env.LINEA_MAINNET_RPC || "https://rpc.linea.build",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     },
     lineaTestnet: {
-      url: "https://rpc.goerli.linea.build",
+      url: process.env.LINEA_TESTNET_RPC || "https://rpc.goerli.linea.build",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     },
     localhost: {

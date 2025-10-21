@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: afri
+      POSTGRES_PASSWORD: afri_pass
+      POSTGRES_DB: afriverse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - afriverse-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - afriverse-network
+
+  ipfs:
+    image: ipfs/kubo:latest
+    ports:
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_data:/data/ipfs
+    networks:
+      - afriverse-network
+
+  backend:
+    build:
+      context: ../../services/backend
+      dockerfile: ../../infra/docker/Dockerfile.backend
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://afri:afri_pass@postgres:5432/afriverse
+      REDIS_URL: redis://redis:6379
+      IPFS_API: http://ipfs:5001
+      WEB3_PROVIDER: https://rpc.testnet.linea.xyz
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - redis
+      - ipfs
+    networks:
+      - afriverse-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../../infra/docker/Dockerfile.frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      NEXT_PUBLIC_IPFS_GATEWAY: http://localhost:8080/ipfs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - afriverse-network
+
+  agentverse:
+    build:
+      context: ../../services/agentverse
+      dockerfile: ../../infra/docker/Dockerfile.agentverse
+    environment:
+      BACKEND_URL: http://backend:4000
+      IPFS_API: http://ipfs:5001
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN}
+    depends_on:
+      - backend
+      - ipfs
+    networks:
+      - afriverse-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  ipfs_data:
+
+networks:
+  afriverse-network:
+    driver: bridge

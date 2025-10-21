@@ -76,6 +76,11 @@ async function main() {
   console.log("📄 Deployment info saved to:", deploymentFile);
   console.log("🎉 AfriVerse deployment completed successfully!");
 
+  // Write/overwrite a latest-deployment.json for easy consumption by other scripts
+  const latestFile = path.join(deploymentsDir, "latest-deployment.json");
+  fs.writeFileSync(latestFile, JSON.stringify(deploymentInfo, null, 2));
+  console.log("📄 Latest deployment info written to:", latestFile);
+
   // Print verification commands
   console.log("\n🔍 Verification commands:");
   console.log(`npx hardhat verify --network ${network.name} ${validatorManager.address}`);
