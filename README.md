@@ -10,7 +10,7 @@
 
 > A decentralized, neural-symbolic AGI platform for preserving, reasoning about, and sharing African indigenous knowledge using MeTTa, blockchain, and autonomous agents.
 
-**Track:** AGI + Cultural Memory | **Hackathon:** BGI25 - AGI Without Borders | **Status:** Production Ready ✅
+**Track:** AGI + Cultural Memory | **Hackathon:** BGI25 - AGI Without Borders | **Status:** 🚀 Ready for Deployment
 
 ---
 
@@ -49,6 +49,15 @@ AfriVerse is a **fully implemented, production-ready** platform that addresses t
 - [BGI25 Hackathon](#-bgi25-hackathon-submission)
 - [License](#-license)
 - [Contact](#-contact)
+
+---
+
+## 🚨 IMPORTANT: Hackathon Submission
+
+**📋 Quick Links:**
+- **[Immediate Action Checklist](./IMMEDIATE_ACTION_CHECKLIST.md)** - Step-by-step tasks (8-10 hours)
+- **[Deployment Guide](./DEPLOYMENT_GUIDE.md)** - Complete deployment instructions
+- **[BGI Hackathon Evaluation Report](./BGI_HACKATHON_EVALUATION_REPORT.md)** - Comprehensive 85/100 assessment
 
 ---
 
@@ -407,7 +416,15 @@ GET /api/entries/search/all?q=medicine&community=Kikuyu
 
 ### UjuziRegistry (Main Contract)
 
-Deployed on **Linea Goerli Testnet**
+**⚠️ DEPLOYMENT REQUIRED:** Ready to deploy on **Linea Goerli Testnet**
+
+**Quick Deploy:**
+```bash
+cd smartcontracts
+npm run deploy:testnet
+```
+
+**After deployment, contract addresses will appear here:**
 
 ```solidity
 function submitEntry(
@@ -479,14 +496,19 @@ We welcome contributions! AfriVerse is built for the community, by the community
 **Dates:** October 14-25, 2025  
 **Prize Pool:** $5,000 USD (4 winners)
 
-### Deliverables
+### Deliverables Status
 
-- ✅ **Source Code:** Complete monorepo on GitHub
-- ✅ **Working Demo:** Deployed frontend + backend
-- ✅ **Smart Contracts:** Deployed to Linea testnet
-- ✅ **Documentation:** 7 comprehensive guides
-- 🔄 **Demo Video:** 3-5 minutes (in progress)
-- 🔄 **Pitch Deck:** 7-10 slides (in progress)
+- ✅ **Source Code:** Complete monorepo on GitHub (100%)
+- ✅ **Documentation:** Comprehensive guides + evaluation report (100%)
+- ⚠️ **Smart Contracts:** Code complete, needs deployment (90%)
+- ⚠️ **Working Demo:** Ready, needs deployment (85%)
+- ❌ **Demo Video:** Script ready, needs recording (40%)
+- 🔄 **Pitch Deck:** In progress (30%)
+
+**Critical Actions Required:**
+1. 🔴 Deploy smart contracts (1-2 hours)
+2. 🔴 Record demo video (2-4 hours)
+3. 🟡 Deploy frontend/backend (optional, 3-4 hours)
 
 ### Why AfriVerse Wins
 
@@ -563,16 +585,16 @@ AfriVerse implements multiple security layers:
 
 ## 📊 Project Status
 
-| Component | Completion | Status |
-|-----------|-----------|--------|
-| Frontend | 100% | ✅ Production Ready |
-| Backend API | 100% | ✅ Production Ready |
-| Smart Contracts | 100% | ✅ Deployed Testnet |
-| AI Agents | 100% | ✅ Functional |
-| Documentation | 100% | ✅ Comprehensive |
-| Deployment | 90% | 🔄 In Progress |
+| Component | Code | Deployed | Status |
+|-----------|------|----------|--------|
+| Frontend | 100% | ❌ Local | ✅ Code Complete |
+| Backend API | 100% | ❌ Local | ✅ Code Complete |
+| Smart Contracts | 100% | ❌ Not Deployed | ⚠️ **NEEDS DEPLOYMENT** |
+| AI Agents | 100% | ✅ Ready | ✅ Functional |
+| Documentation | 100% | ✅ Complete | ✅ Comprehensive |
+| Demo Video | 40% | ❌ Not Recorded | ⚠️ **CRITICAL** |
 
-**Overall: 95% Complete** - Ready for demo & submission!
+**Overall: 85% Complete** - See [IMMEDIATE_ACTION_CHECKLIST.md](./IMMEDIATE_ACTION_CHECKLIST.md) for remaining tasks!
 
 ---
 

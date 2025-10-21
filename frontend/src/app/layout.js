@@ -74,8 +74,6 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon?<generated>" type="image/<generated>" sizes="<generated>" />
       </head>
       <body className="font-poppins bg-primary-navy text-primary-white min-h-screen">
         <ErrorBoundary>
