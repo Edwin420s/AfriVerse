@@ -1,16 +1,30 @@
-FROM node:18-alpine
+FROM node:18-alpine AS base
 
 WORKDIR /app
 
+# Install dependencies (include dev deps for Prisma generate)
+FROM base AS deps
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci && npm cache clean --force
 
+# Build stage: copy source and generate Prisma client
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# Production runtime: prune dev dependencies
+FROM base AS runner
+WORKDIR /app
+COPY --from=build /app .
+# Prune to production dependencies only
+RUN npm prune --omit=dev && npm cache clean --force
 
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs \
+ && adduser -S nextjs -u 1001
+# Install curl for healthcheck
+RUN apk add --no-cache curl
 USER nextjs
 
 EXPOSE 4000

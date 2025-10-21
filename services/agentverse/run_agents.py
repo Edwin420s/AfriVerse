@@ -3,9 +3,9 @@
 Main script to run all AfriVerse agents
 """
 
-from ingest_agent import ingest_agent
-from symbolizer_agent import symbolizer_agent
-from query_agent import query_agent
+from agents.ingest_agent import ingest_agent
+from agents.symbolizer_agent import symbolizer_agent
+from agents.query_agent import query_agent
 from uagents import Bureau
 
 def main():
