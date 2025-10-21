@@ -69,34 +69,14 @@ AfriVerse is a **fully implemented, production-ready** platform that addresses t
 
 ---
 
-## 🚨 HACKATHON SUBMISSION GUIDE
+## 🚨 Hackathon Deployment
 
-**📊 Project Score: 85/100 → With Deployment: 95/100 (Top 10%)** 🏆
+**Score: 85/100 → 95/100 with deployment** 🏆 | **Time: 5-10 hrs**
 
-### Critical Tasks (5-10 hours to complete):
-
-#### ❌ 1. Deploy Smart Contracts (1-2 hours) - BLOCKING
-```bash
-cd smartcontracts
-copy .env.example .env
-# Edit .env: Add PRIVATE_KEY from MetaMask
-# Get testnet ETH: https://faucet.goerli.linea.build/
-
-npm install
-npm run compile
-npm run deploy:testnet
-# Copy contract addresses from output
-```
-
-#### ❌ 2. Record Demo Video (2-4 hours) - REQUIRED
-**Requirements:** 3-5 min, show submission → IPFS → blockchain  
-**Script:** See [DEMO_SCRIPT.md](./docs/DEMO_SCRIPT.md)  
-**Upload:** YouTube, then add link to README
-
-#### ❌ 3. Update README (15 min) - FINAL
-Add contract addresses and demo video link to this section
-
-**📋 Complete Guide:** [HACKATHON_SUBMISSION_GUIDE.md](./HACKATHON_SUBMISSION_GUIDE.md)
+### Tasks:
+1. **Deploy Contracts** (1-2 hrs) - See [DEPLOY.md](./DEPLOY.md)
+2. **Record Demo** (2-4 hrs) - Script in [docs/DEMO_SCRIPT.md](./docs/DEMO_SCRIPT.md)
+3. **Update Links** (15 min) - Add addresses & video below
 
 ---
 
