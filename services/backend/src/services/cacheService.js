@@ -12,16 +12,45 @@ const logger = require('../utils/logger');
  */
 class CacheService {
   constructor() {
-    this.redis = new Redis(config.redis.url, config.redis.options);
+    this.redis = null;
     this.defaultTTL = 3600; // 1 hour
+    this.connected = false;
     
-    this.redis.on('error', (error) => {
-      logger.error('Redis connection error:', error);
-    });
-    
-    this.redis.on('connect', () => {
-      logger.info('Redis connected successfully');
-    });
+    try {
+      this.redis = new Redis(config.redis.url, {
+        ...config.redis.options,
+        lazyConnect: true,
+        retryStrategy: (times) => {
+          if (times > 3) {
+            logger.warn('Redis connection failed after 3 attempts, operating without cache');
+            return null; // Stop retrying
+          }
+          return Math.min(times * 200, 1000);
+        }
+      });
+      
+      this.redis.on('error', (error) => {
+        if (error.code !== 'ECONNREFUSED') {
+          logger.error('Redis connection error:', error);
+        }
+        this.connected = false;
+      });
+      
+      this.redis.on('connect', () => {
+        logger.info('Redis connected successfully');
+        this.connected = true;
+      });
+      
+      // Attempt connection but don't block on failure
+      this.redis.connect().catch(() => {
+        logger.warn('Redis not available, cache features will be disabled');
+        this.connected = false;
+      });
+    } catch (error) {
+      logger.warn('Redis initialization failed, operating without cache:', error.message);
+      this.redis = null;
+      this.connected = false;
+    }
   }
 
   /**
@@ -30,6 +59,7 @@ class CacheService {
    * @returns {Promise<any|null>}
    */
   async get(key) {
+    if (!this.redis || !this.connected) return null;
     try {
       const value = await this.redis.get(key);
       return value ? JSON.parse(value) : null;
@@ -47,6 +77,7 @@ class CacheService {
    * @returns {Promise<boolean>}
    */
   async set(key, value, ttl = this.defaultTTL) {
+    if (!this.redis || !this.connected) return false;
     try {
       const serializedValue = JSON.stringify(value);
       if (ttl > 0) {
@@ -67,6 +98,7 @@ class CacheService {
    * @returns {Promise<boolean>}
    */
   async del(key) {
+    if (!this.redis || !this.connected) return false;
     try {
       await this.redis.del(key);
       return true;
@@ -82,6 +114,7 @@ class CacheService {
    * @returns {Promise<boolean>}
    */
   async exists(key) {
+    if (!this.redis || !this.connected) return false;
     try {
       const result = await this.redis.exists(key);
       return result === 1;
@@ -96,6 +129,7 @@ class CacheService {
    * @returns {Promise<{status: 'healthy'|'unhealthy', message: string}>}
    */
   async health() {
+    if (!this.redis || !this.connected) return { status: 'unhealthy', message: 'Redis not connected' };
     try {
       await this.redis.ping();
       return { status: 'healthy', message: 'Redis is responding' };

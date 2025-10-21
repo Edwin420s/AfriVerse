@@ -11,29 +11,7 @@ import "./ValidatorManager.sol";
  * Manages submission, validation, and provenance of indigenous knowledge
  */
 contract UjuziRegistry is IUjuziRegistry {
-    // Entry status enumeration
-    enum EntryStatus { Pending, Validated, Rejected, Archived }
-    
-    // License types for cultural content
-    enum LicenseType { 
-        CommunityOnly, 
-        CC_BY_NC, 
-        ResearchOnly, 
-        OpenAccess 
-    }
-    
-    // Entry structure
-    struct CulturalEntry {
-        bytes32 cid; // IPFS content identifier
-        address author;
-        uint256 timestamp;
-        LicenseType license;
-        EntryStatus status;
-        string language;
-        string community;
-        uint256 validationScore;
-        bytes32[] atomHashes; // Hashes of symbolic atoms
-    }
+    // Use types from IUjuziRegistry interface
     
     // State variables
     CulturalEntry[] public entries;

@@ -6,8 +6,29 @@ async function main() {
   console.log("🚀 Deploying AfriVerse Smart Contracts...");
 
   // Get deployer account
-  const [deployer] = await ethers.getSigners();
+  const signers = await ethers.getSigners();
+  
+  if (signers.length === 0) {
+    throw new Error(
+      "❌ No deployer account found!\n" +
+      "\n📝 Setup Instructions:\n" +
+      "1. Copy .env.example to .env: cp .env.example .env\n" +
+      "2. Add your private key to the .env file (without 0x prefix)\n" +
+      "3. Make sure your account has testnet ETH for gas fees\n" +
+      "\n🔗 Get Linea Goerli testnet ETH from: https://faucet.goerli.linea.build/"
+    );
+  }
+  
+  const [deployer] = signers;
   console.log(`Deploying contracts with account: ${deployer.address}`);
+  
+  // Check account balance
+  const balance = await deployer.getBalance();
+  console.log(`Account balance: ${ethers.utils.formatEther(balance)} ETH`);
+  
+  if (balance.eq(0)) {
+    console.warn("⚠️  Warning: Account balance is 0. You may need testnet ETH to deploy.");
+  }
 
   // Deploy ValidatorManager
   console.log("📋 Deploying ValidatorManager...");

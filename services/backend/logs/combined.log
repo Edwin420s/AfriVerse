@@ -1,0 +1,16 @@
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:08.442Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:08.518Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:08.634Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:08.789Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:09.004Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:09.266Z"}
+[31merror[39m: Redis connection error: {"code":"ECONNREFUSED","service":"afriverse-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2025-10-21T22:44:09.582Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T22:44:39.207Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T22:44:48.653Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T22:44:59.213Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T22:45:17.341Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T22:45:18.637Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:05:21.075Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:05:22.292Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:07:51.433Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:07:52.661Z"}

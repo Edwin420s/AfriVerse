@@ -1,3 +1,6 @@
+// Load environment variables first
+require('dotenv').config();
+
 const app = require('./app');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -35,30 +38,33 @@ const gracefulShutdown = async (signal) => {
 
 // Start server
 const server = app.listen(PORT, HOST, async () => {
+  console.log(`🚀 AfriVerse API server running on http://${HOST}:${PORT}`);
+  console.log(`📚 API Documentation available at http://${HOST}:${PORT}/api/docs`);
+  console.log(`❤️  Health check at http://${HOST}:${PORT}/health`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  
+  // Test database connection (non-blocking)
   try {
-    // Test database connection
     await prisma.$connect();
     console.log('✅ Database connected successfully');
+  } catch (error) {
+    console.warn('⚠️  Database connection failed:', error.message);
+    console.warn('   Server will continue but database features will be unavailable');
+  }
 
-    // Test Redis connection (if using job queues)
-    if (process.env.REDIS_URL) {
+  // Test Redis connection (non-blocking)
+  if (process.env.REDIS_URL) {
+    try {
       const Redis = require('ioredis');
-      const redis = new Redis(process.env.REDIS_URL);
+      const redis = new Redis(process.env.REDIS_URL, { lazyConnect: true });
+      await redis.connect();
       await redis.ping();
       console.log('✅ Redis connected successfully');
       redis.disconnect();
+    } catch (error) {
+      console.warn('⚠️  Redis connection failed:', error.message);
+      console.warn('   Cache features will be disabled');
     }
-
-    console.log(`🚀 AfriVerse API server running on http://${HOST}:${PORT}`);
-    console.log(`📚 API Documentation available at http://${HOST}:${PORT}/api/docs`);
-    console.log(`❤️  Health check at http://${HOST}:${PORT}/health`);
-    
-    // Log environment
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
   }
 });
 
