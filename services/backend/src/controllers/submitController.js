@@ -116,6 +116,12 @@ class SubmitController {
     try {
       const { entryId } = req.params;
       const { transcript, status } = req.body;
+      if (typeof transcript !== 'string' || transcript.trim().length === 0) {
+        return res.status(400).json({ success: false, error: 'transcript must be a non-empty string' });
+      }
+      if (status && typeof status !== 'string') {
+        return res.status(400).json({ success: false, error: 'status must be a string if provided' });
+      }
 
       const entry = await prisma.entry.update({
         where: { id: parseInt(entryId) },
@@ -155,6 +161,16 @@ class SubmitController {
     try {
       const { entryId } = req.params;
       const { atoms, status } = req.body;
+      if (!Array.isArray(atoms)) {
+        return res.status(400).json({ success: false, error: 'atoms must be an array' });
+      }
+      const invalidAtom = atoms.find(a => typeof a !== 'string' || a.trim().length === 0);
+      if (invalidAtom) {
+        return res.status(400).json({ success: false, error: 'each atom must be a non-empty string' });
+      }
+      if (status && typeof status !== 'string') {
+        return res.status(400).json({ success: false, error: 'status must be a string if provided' });
+      }
 
       const entry = await prisma.entry.update({
         where: { id: parseInt(entryId) },
