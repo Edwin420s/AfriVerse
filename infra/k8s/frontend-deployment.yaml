@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: afriverse
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: afriverse/frontend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: api-url
+        - name: NEXT_PUBLIC_IPFS_GATEWAY
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: ipfs-gateway
+        - name: NEXT_PUBLIC_CONTRACT_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: contract-address
+        - name: NEXT_PUBLIC_NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: network-id
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: afriverse
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: frontend
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: afriverse
+data:
+  api-url: "http://backend:4000"
+  ipfs-gateway: "http://ipfs:8080/ipfs"
+  contract-address: "0x..."
+  network-id: "59140"

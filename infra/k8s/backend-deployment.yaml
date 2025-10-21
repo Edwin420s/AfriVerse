@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: afriverse
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: afriverse/backend:latest
+        ports:
+        - containerPort: 4000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4000"
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: redis-url
+        - name: IPFS_API
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: ipfs-api
+        - name: WEB3_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: web3-provider
+        - name: CONTRACT_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: contract-address
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: openai-api-key
+        - name: HUGGINGFACE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: huggingface-token
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: jwt-secret
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: afriverse
+spec:
+  ports:
+  - port: 4000
+    targetPort: 4000
+  selector:
+    app: backend
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: afriverse
+data:
+  database-url: "postgresql://afri:afri_pass@postgres:5432/afriverse"
+  redis-url: "redis://redis:6379"
+  ipfs-api: "http://ipfs:5001"
+  web3-provider: "https://rpc.testnet.linea.xyz"
+  contract-address: "0x..."
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secret
+  namespace: afriverse
+type: Opaque
+data:
+  openai-api-key: "<base64-encoded-openai-key>"
+  huggingface-token: "<base64-encoded-hf-token>"
+  jwt-secret: "<base64-encoded-jwt-secret>"

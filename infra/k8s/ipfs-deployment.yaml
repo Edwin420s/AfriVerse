@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipfs
+  namespace: afriverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipfs
+  template:
+    metadata:
+      labels:
+        app: ipfs
+    spec:
+      containers:
+      - name: ipfs
+        image: ipfs/kubo:latest
+        ports:
+        - containerPort: 5001
+          name: api
+        - containerPort: 8080
+          name: gateway
+        - containerPort: 4001
+          name: swarm
+        env:
+        - name: IPFS_PROFILE
+          value: "server"
+        - name: IPFS_SWARM_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ipfs-secret
+              key: swarm-key
+        command:
+        - ipfs
+        - daemon
+        - --migrate=true
+        - --enable-gc
+        - --routing=dhtclient
+        volumeMounts:
+        - name: ipfs-data
+          mountPath: /data/ipfs
+        livenessProbe:
+          httpGet:
+            path: /api/v0/version
+            port: api
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /api/v0/version
+            port: api
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: ipfs-data
+        persistentVolumeClaim:
+          claimName: ipfs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs
+  namespace: afriverse
+spec:
+  ports:
+  - port: 5001
+    targetPort: 5001
+    name: api
+  - port: 8080
+    targetPort: 8080
+    name: gateway
+  selector:
+    app: ipfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ipfs-pvc
+  namespace: afriverse
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ipfs-secret
+  namespace: afriverse
+type: Opaque
+stringData:
+  swarm-key: "/key/swarm/psk/1.0.0/\n/base16/\n$(openssl rand -hex 32)"
