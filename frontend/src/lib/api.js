@@ -25,6 +25,18 @@ export const api = {
         'Content-Type': 'application/json',
         ...getAuthHeaders()
       },
+
+  async queryKnowledge(query, context = {}) {
+    const response = await fetch(`${API_BASE_URL}/entries/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify({ query, context })
+    })
+    return handleResponse(response)
+  },
       body: JSON.stringify({ walletAddress, signature })
     })
     return handleResponse(response)
@@ -44,10 +56,65 @@ export const api = {
 
   // Submission endpoints
   async submitEntry(formData) {
-    const response = await fetch(`${API_BASE_URL}/entries`, {
+    const response = await fetch(`${API_BASE_URL}/submit`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
+    })
+    return handleResponse(response)
+  },
+
+  async getSubmissionStatus(entryId) {
+    const response = await fetch(`${API_BASE_URL}/submit/status/${entryId}`, {
+      headers: getAuthHeaders()
+    })
+    return handleResponse(response)
+  },
+
+  async patchTranscript(entryId, transcript, status = 'transcribed') {
+    const response = await fetch(`${API_BASE_URL}/submit/${entryId}/transcript`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify({ transcript, status })
+    })
+    return handleResponse(response)
+  },
+
+  async patchAtoms(entryId, atoms, status = 'symbolized') {
+    const response = await fetch(`${API_BASE_URL}/submit/${entryId}/atoms`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify({ atoms, status })
+    })
+    return handleResponse(response)
+  },
+
+  async symbolizeTranscript(transcript, context = {}) {
+    const response = await fetch(`${API_BASE_URL}/submit/symbolize`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify({ transcript, context })
+    })
+    return handleResponse(response)
+  },
+
+  async transcribe(file, language = 'sw') {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('language', language)
+    const response = await fetch(`${API_BASE_URL}/submit/transcribe`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: formData
     })
     return handleResponse(response)
   },

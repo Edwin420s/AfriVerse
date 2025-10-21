@@ -202,6 +202,39 @@ class SubmitController {
     }
   }
 
+  async transcribe(req, res) {
+    try {
+      const file = req.file;
+      const { language } = req.body;
+
+      if (!file || !file.buffer) {
+        return res.status(400).json({
+          success: false,
+          error: 'Audio file is required'
+        });
+      }
+
+      const transcriptResult = await transcriptionService.transcribeAudio(
+        file.buffer,
+        language || 'sw'
+      );
+
+      return res.json({
+        success: true,
+        transcript: transcriptResult.text,
+        language: transcriptResult.language,
+        duration: transcriptResult.duration || null,
+        words: transcriptResult.words || []
+      });
+    } catch (error) {
+      console.error('Transcription endpoint error:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Transcription failed: ' + error.message
+      });
+    }
+  }
+
   async symbolizeTranscript(req, res) {
     try {
       const { transcript, context } = req.body;

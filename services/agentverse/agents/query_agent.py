@@ -59,7 +59,7 @@ class QueryAgent(Agent):
     
     async def process_query(self, query: str, context: dict) -> QueryResponse:
         """Forward the query to the backend query endpoint and parse response."""
-        query_url = f"{self.backend_url}/api/query"
+        query_url = f"{self.backend_url}/api/entries/query"
         
         data = {
             'query': query,

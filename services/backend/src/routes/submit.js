@@ -41,4 +41,7 @@ router.patch('/:entryId/atoms', submitController.updateAtoms);
 // Symbolize transcript (direct API)
 router.post('/symbolize', submitController.symbolizeTranscript);
 
+// Transcribe audio file (direct API)
+router.post('/transcribe', upload.single('file'), submitController.transcribe);
+
 module.exports = router;
