@@ -35,9 +35,9 @@ AfriVerse is a **fully implemented, production-ready** platform that addresses t
 - ValidatorManager: `[TO BE DEPLOYED]`
 
 **🔗 Quick Links:**
+- **Setup Guide:** [SETUP.md](./SETUP.md) - Get started in 15 minutes
 - Frontend: http://localhost:3000 (local)
 - Backend API: http://localhost:4000 (local)
-- Deployment Guide: [HACKATHON_SUBMISSION_GUIDE.md](./HACKATHON_SUBMISSION_GUIDE.md)
 
 ---
 
@@ -69,14 +69,9 @@ AfriVerse is a **fully implemented, production-ready** platform that addresses t
 
 ---
 
-## 🚨 Hackathon Deployment
+## 🚀 Getting Started
 
-**Score: 85/100 → 95/100 with deployment** 🏆 | **Time: 5-10 hrs**
-
-### Tasks:
-1. **Deploy Contracts** (1-2 hrs) - See [DEPLOY.md](./DEPLOY.md)
-2. **Record Demo** (2-4 hrs) - Script in [docs/DEMO_SCRIPT.md](./docs/DEMO_SCRIPT.md)
-3. **Update Links** (15 min) - Add addresses & video below
+**New to AfriVerse?** See [SETUP.md](./SETUP.md) for quick installation and deployment guide.
 
 ---
 
@@ -354,21 +349,9 @@ AfriVerse/
 
 ## 📚 Documentation
 
-All documentation is organized in the **`docs/`** folder:
-
-### Setup & Installation
-- **[Quick Start Guide](docs/QUICK_START_README.md)** - Get running in 1 hour
-- **[Complete Setup Guide](docs/SETUP_GUIDE.md)** - Detailed walkthrough (60 min)
-- **[Missing Files Checklist](docs/MISSING_FILES_CHECKLIST.md)** - Action items tracker
-
-### Technical Documentation
-- **[Project Analysis](docs/PROJECT_ANALYSIS.md)** - Complete audit with 75% readiness score
-- **[Implementation Summary](docs/IMPLEMENTATION_SUMMARY.md)** - Architecture deep dive (6,200 words)
-- **[API Documentation](docs/API_DOCUMENTATION.md)** - Endpoint reference
-
-### Presentation & Demo
-- **[Demo Script](docs/DEMO_SCRIPT.md)** - 5-minute hackathon presentation
-- **[Pitch Deck](#)** - Coming soon
+- **[SETUP.md](./SETUP.md)** - Quick start guide to run the project
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - API endpoint reference
+- **README.md** - Complete project overview (you are here)
 
 ---
 
