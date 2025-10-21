@@ -6,352 +6,271 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.17-orange.svg)](https://soliditylang.org/)
-[![BGI25 Hackathon](https://img.shields.io/badge/BGI25-Hackathon-purple.svg)](https://bgi25.com/)
 
-> A decentralized, neural-symbolic AGI platform for preserving, reasoning about, and sharing African indigenous knowledge using MeTTa, blockchain, and autonomous agents.
+> **A decentralized platform for preserving indigenous knowledge using AI, blockchain, and community governance.**
 
-**Track:** AGI + Cultural Memory | **Hackathon:** BGI25 - AGI Without Borders | **Status:** 🚀 Ready for Deployment
-
----
-
-## 🎯 Overview
-
-AfriVerse is a **fully implemented, production-ready** platform that addresses three critical challenges:
-
-1. **Cultural Loss** - Indigenous knowledge is disappearing with each generation
-2. **AI Bias** - Current AGI systems ignore non-Western cultural wisdom
-3. **Data Colonization** - Big tech monopolizes AI training data
-
-**Our Solution:** A voice-first, community-governed, blockchain-verified platform where elders can preserve cultural knowledge, AGI can learn to reason with symbolic wisdom, and communities maintain ownership.
+AfriVerse uses symbolic AI (MeTTa), blockchain (Linea zkEVM), and IPFS to help communities preserve their cultural heritage in a way that AI systems can understand and reason with—not just store.
 
 ---
 
-## 🌐 Live Demo & Verification
+## 📖 Table of Contents
 
-**📺 Demo Video:** [YouTube Link - TO BE ADDED]  
-**⛓️ Smart Contracts (Linea Testnet):**
-- UjuziRegistry: `[TO BE DEPLOYED]` 
-- CulturalToken: `[TO BE DEPLOYED]`
-- ValidatorManager: `[TO BE DEPLOYED]`
-
-**🔗 Quick Links:**
-- **Setup Guide:** [SETUP.md](./SETUP.md) - Get started in 15 minutes
-- Frontend: http://localhost:3000 (local)
-- Backend API: http://localhost:4000 (local)
-
----
-
-### Why AfriVerse Matters
-
-- 🎤 **Voice-First** - Record in native languages without typing
-- 🧠 **Symbolic AI** - MeTTa atoms enable reasoning, not just storage
-- ⛓️ **Blockchain Provenance** - Immutable attribution on Linea zkEVM
-- 👥 **Community Validation** - Cultural accuracy verified by local validators
-- 🔍 **Explainable AGI** - See how AI reasons with cultural knowledge
-- 🌐 **Decentralized** - IPFS storage, federated architecture, no single owner
-
----
-
-## 📚 Table of Contents
-
-- [Features](#-key-features)
+- [What is AfriVerse?](#-what-is-afriverse)
+- [Why It Matters](#-why-it-matters)
+- [How It Works](#-how-it-works)
+- [Key Features](#-key-features)
 - [Technology Stack](#-technology-stack)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start-3-steps)
+- [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
-- [Documentation](#-documentation)
 - [API Overview](#-api-overview)
 - [Smart Contracts](#-smart-contracts)
 - [Contributing](#-contributing)
-- [BGI25 Hackathon](#-bgi25-hackathon-submission)
+- [Team](#-team)
 - [License](#-license)
-- [Contact](#-contact)
 
 ---
 
-## 🚀 Getting Started
+## 🎯 What is AfriVerse?
 
-**New to AfriVerse?** See [SETUP.md](./SETUP.md) for quick installation and deployment guide.
+AfriVerse is a **decentralized cultural preservation platform** that addresses the global crisis of indigenous knowledge loss. We combine:
+
+- **🧠 Symbolic AI (MeTTa)** - AI that reasons with cultural knowledge, not just searches it
+- **⛓️ Blockchain (Linea)** - Immutable attribution and provenance for cultural contributions
+- **📁 Decentralized Storage (IPFS)** - Community-owned, censorship-resistant storage
+- **🤖 Autonomous Agents** - Automated processing and validation workflows
+- **👥 Community Governance** - Cultural experts validate knowledge accuracy
+
+### The Problem
+
+1. **Cultural Extinction** - UNESCO reports 43% of world languages are endangered
+2. **AI Bias** - Current AGI systems ignore non-Western cultural wisdom
+3. **Data Colonization** - Big tech monopolizes training data without community benefit
+
+### Our Solution
+
+A voice-first platform where elders and cultural practitioners can:
+- Record knowledge in their native language (no typing required)
+- Maintain ownership through blockchain provenance
+- Earn reputation tokens for contributions
+- Ensure cultural accuracy through community validation
+
+---
+
+## 🌟 Why It Matters
+
+### For Communities
+
+- **Preserve Cultural Heritage** - Before it's lost forever
+- **Maintain Ownership** - Blockchain proves who contributed what
+- **Earn Recognition** - Reputation system rewards cultural experts
+- **Control Access** - Choose licenses (Community Only, Research, Open Access)
+
+### For AI Development
+
+- **Reduce Bias** - Train on diverse, non-Western knowledge
+- **Enable Reasoning** - MeTTa symbolic AI enables logical inference, not just pattern matching
+- **Ethical Data** - Contributors consent and are recognized
+- **Explainability** - See how AI arrives at answers about cultural knowledge
+
+### For Researchers
+
+- **Structured Knowledge** - Query cultural wisdom like a database
+- **Provenance** - Know the source and validation status
+- **Multilingual** - Access knowledge in original languages
+- **Reasoning Traces** - Understand AI's logical steps
+
+---
+
+## 🔄 How It Works
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. SUBMIT                                                  │
+│     Elder records a story about medicinal plants (Swahili)  │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  2. UPLOAD TO IPFS                                          │
+│     Audio stored on decentralized network (content hash)    │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  3. AI PROCESSING (Agents)                                  │
+│     → Transcribe: Audio → Text (OpenAI Whisper)            │
+│     → Symbolize: Text → MeTTa Atoms (Symbolic AI)          │
+│        Example: (treats burns (plant "aloe-vera"))          │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  4. COMMUNITY VALIDATION                                    │
+│     Local validators review for cultural accuracy           │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  5. BLOCKCHAIN ANCHORING                                    │
+│     Validated entry recorded on Linea zkEVM                 │
+│     Contributor earns reputation tokens                     │
+└─────────────────────────────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  6. QUERY & REASONING                                       │
+│     Q: "What treats burns in Kenya?"                        │
+│     A: "Aloe vera - used by Kikuyu for burn treatment"      │
+│     [Shows reasoning trace and cultural context]            │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## ✨ Key Features
 
-### For Cultural Contributors
-- 🎙️ **Voice Recording** - Capture oral traditions without tech barriers
-- 📝 **Text Submission** - Type stories, proverbs, or practices
-- 📄 **Consent Management** - Choose licenses (Community Only, Research, Open Access)
-- 🏆 **Reputation System** - Earn cultural tokens for contributions
-- 📊 **Dashboard** - Track your submissions and impact
+### 🎙️ **Voice-First Submission**
+- Record directly in your native language
+- No typing or technical skills required
+- Audio, video, or text supported
 
-### For Validators
-- ✅ **Review Queue** - Approve/reject pending entries
-- 📝 **Validation Notes** - Add cultural context and corrections
-- 🔐 **Blockchain Verification** - Immutable validation records
-- 📈 **Reputation Tracking** - Build trust through accurate reviews
+### 🧠 **Symbolic AI Integration**
+- MeTTa atoms enable AI reasoning (not just search)
+- Example: `(plant aloe-vera) (treats burns) (community Kikuyu)`
+- AI can infer new relationships and answer complex questions
 
-### For Researchers & Developers
-- 🔍 **Knowledge Query** - Ask questions in natural language
-- 🧮 **Reasoning Traces** - See how AGI arrives at answers
-- 📊 **3D Knowledge Graph** - Visualize cultural connections
-- 🔗 **API Access** - Integrate with external applications
-- 🎓 **Educational Use** - Preserve and teach cultural wisdom
+### ⛓️ **Blockchain Provenance**
+- Immutable record of who contributed what
+- Timestamp and license information
+- Deployed on Linea zkEVM (low gas fees: ~$0.05 per entry)
 
-### For AGI Systems
-- 🧠 **Symbolic Atoms** - MeTTa-based knowledge representation
-- 🤖 **Autonomous Agents** - Process submissions without human intervention
-- 🔬 **Inference Engine** - Reason over cultural knowledge graphs
-- 🌐 **Multi-language Support** - Swahili, English, Yoruba, Igbo, Hausa
+### 👥 **Community Validation**
+- Cultural experts review submissions
+- Multi-signature style validation
+- Reputation tracking for validators
+
+### 📊 **Knowledge Graph**
+- Visualize cultural connections
+- See reasoning traces
+- Explore related knowledge
+
+### 🌐 **Multilingual Support**
+- Swahili, English, Yoruba, Igbo, Hausa
+- More languages coming soon
 
 ---
 
 ## 🛠 Technology Stack
 
-AfriVerse is a **full-stack monorepo** integrating 7 cutting-edge technologies:
+### Frontend
+- **Next.js 14** - React framework with server components
+- **TailwindCSS** - Modern, responsive styling
+- **Framer Motion** - Smooth animations
+- **ethers.js** - Blockchain wallet integration
 
-### Frontend Layer
-- **Framework:** Next.js 14 (App Router, Server Components)
-- **Styling:** Tailwind CSS + Framer Motion animations
-- **Components:** 25+ custom React components
-- **Web3:** ethers.js v6 for wallet integration
-- **Features:** Voice recording, 3D graphs, AR viewer, collaborative editing
+### Backend
+- **Node.js + Express** - RESTful API server
+- **PostgreSQL + Prisma** - Database and ORM
+- **Redis + BullMQ** - Caching and job queues
+- **OpenAI Whisper** - Speech-to-text transcription
+- **Pinata** - IPFS pinning service
 
-### Backend Layer
-- **Runtime:** Node.js 18+
-- **Framework:** Express.js with security middleware (helmet, cors)
-- **Database:** PostgreSQL 15 with Prisma ORM
-- **Cache:** Redis with Bull job queues
-- **Storage:** IPFS via Pinata
-- **AI:** OpenAI Whisper (transcription), HuggingFace (fallback), Custom LLM prompts
+### Blockchain
+- **Linea zkEVM** - Ethereum Layer 2 (low fees, high speed)
+- **Solidity 0.8.17** - Smart contract language
+- **Hardhat** - Development framework
+- **OpenZeppelin** - Security-audited contract libraries
 
-### Blockchain Layer
-- **Network:** Linea zkEVM (L2 Ethereum)
-- **Language:** Solidity 0.8.17
-- **Framework:** Hardhat with OpenZeppelin
-- **Contracts:** UjuziRegistry, CulturalToken, ValidatorManager
-- **Gas Cost:** < $0.05 per entry
-
-### Agent Layer
-- **Framework:** uAgents (Fetch.AI)
-- **Language:** Python 3.10+
-- **Agents:** Ingest, Transcribe, Symbolizer, Validator, Query
-- **Orchestration:** Bureau pattern with Redis pub/sub
-
-### Symbolic AI
-- **Language:** MeTTa (Meta-Transcendental Language)
-- **Representation:** Atom-based knowledge graphs
-- **Reasoning:** Logical inference over symbolic structures
-- **Fallback:** JSON-based atom storage for MVP
+### AI & Agents
+- **MeTTa** - Symbolic AI for knowledge representation
+- **Fetch.AI uAgents** - Autonomous agent framework (Python)
+- **HuggingFace** - Fallback AI models
 
 ---
 
-## 🏗 Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        USER INTERFACES                          │
-│  Web App (Next.js) • Mobile (Planned) • API Clients            │
-└───────────────────────┬─────────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────────┐
-│                    BACKEND API (Node.js)                        │
-│  Routes • Controllers • Services • Jobs • Middleware            │
-├─────────────────────────────────────────────────────────────────┤
-│  • Submit Entry  • Validate  • Query  • Search  • Analytics    │
-└─┬────────┬────────┬────────┬────────┬────────┬────────┬────────┘
-  │        │        │        │        │        │        │
-  ▼        ▼        ▼        ▼        ▼        ▼        ▼
-┌────┐ ┌────┐  ┌─────┐  ┌──────┐ ┌──────┐ ┌─────┐  ┌───────┐
-│IPFS│ │ DB │  │Redis│  │OpenAI│ │ HF   │ │MeTTa│  │ Web3  │
-│Pin │ │PG  │  │Cache│  │Whis  │ │Trans │ │Symb │  │ethers │
-└────┘ └────┘  └─────┘  └──────┘ └──────┘ └─────┘  └───────┘
-                  │                                      │
-                  ▼                                      ▼
-        ┌─────────────────────┐              ┌──────────────────┐
-        │   AGENT BUREAU      │              │ LINEA BLOCKCHAIN │
-        │  (Fetch.AI uAgents) │              │  Smart Contracts │
-        ├─────────────────────┤              ├──────────────────┤
-        │ • Ingest Agent      │              │ • UjuziRegistry  │
-        │ • Transcribe Agent  │◄────────────►│ • CulturalToken  │
-        │ • Symbolizer Agent  │              │ • ValidatorMgr   │
-        │ • Validator Agent   │              └──────────────────┘
-        │ • Query Agent       │
-        └─────────────────────┘
-```
-
-### Data Flow
-
-**Submission Flow:**
-```
-User → Frontend → Backend → IPFS (CID) → Database → Redis Queue 
-→ Agents (Transcribe → Symbolize → Validate) → Blockchain Anchor
-```
-
-**Query Flow:**
-```
-User → Frontend → Backend → MeTTa Service (Reason) → LLM (Explain) 
-→ Frontend (Display with trace)
-```
-
----
-
-## 🚀 Quick Start (3 Steps)
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+, Python 3.10+, Docker
-- API Keys: Pinata, OpenAI, HuggingFace
-- Testnet ETH from [Linea Faucet](https://faucet.goerli.linea.build/)
 
-### Step 1: Install Dependencies (30 min)
+- **Node.js** 18+ and npm
+- **Python** 3.10+
+- **PostgreSQL** database
+- **MetaMask** wallet
+- **(Optional)** API keys for Pinata (IPFS) and OpenAI
+
+### Quick Setup
+
+**See [SETUP.md](./SETUP.md) for detailed installation instructions.**
+
+**Quick version:**
 
 ```bash
-# Clone repository
+# 1. Clone and install
 git clone https://github.com/Edwin420s/AfriVerse.git
 cd AfriVerse
 
-# Backend
+# 2. Backend
 cd services/backend
 npm install
+cp .env.example .env
+# Edit .env with your database URL and API keys
 
-# Frontend
+# 3. Frontend
 cd ../../frontend
 npm install
-
-# Smart Contracts
-cd ../smartcontracts
-npm install
-
-# Agents
-cd ../services/agentverse
-python -m venv venv
-venv\Scripts\activate  # Windows: venv\Scripts\activate | Mac/Linux: source venv/bin/activate
-pip install -r requirements.txt
-```
-
-### Step 2: Configure Environment (15 min)
-
-```bash
-# Backend
-cd services/backend
-cp .env.example .env.local
-# Edit .env.local: Add PINATA_JWT, OPENAI_API_KEY, PRIVATE_KEY
-
-# Frontend
-cd ../../frontend
 cp .env.local.example .env.local
-# Edit .env.local: Add NEXT_PUBLIC_CONTRACT_ADDRESS (after deploy)
 
-# Agents
-cd ../services/agentverse
-# Create .env: BACKEND_URL, OPENAI_API_KEY, HUGGINGFACE_TOKEN
-```
-
-### Step 3: Start Services (15 min)
-
-```bash
-# Terminal 1: Infrastructure
-cd services
-docker compose up -d postgres redis
-
-# Terminal 2: Database
-cd backend
-npm run prisma:migrate  # Name it: init
-npm run dev  # Backend runs on :4000
-
-# Terminal 3: Frontend
-cd ../../frontend
-npm run dev  # Frontend runs on :3000
-
-# Terminal 4: Deploy Contracts (first time only)
+# 4. Smart Contracts
 cd ../smartcontracts
-npm run deploy:testnet  # Save contract address!
+npm install
+cp .env.example .env
+# Edit .env with your MetaMask private key
 
-# Terminal 5: Agents (optional for full demo)
-cd ../services/agentverse
-source venv/bin/activate
-python run_agents.py
+# 5. Deploy contracts
+npm run compile
+npm run deploy:testnet
+# Save the contract addresses
+
+# 6. Start services
+# Terminal 1: Backend
+cd services/backend && npm run dev
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+
+# Open http://localhost:3000
 ```
-
-**Open:** http://localhost:3000 🎉
 
 ---
 
 ## 📁 Project Structure
 
-AfriVerse is a **full-stack monorepo** integrating 7 cutting-edge technologies:
-
 ```
 AfriVerse/
-├── frontend/                    # Next.js 14 Application
-│   ├── src/
-│   │   ├── app/                # Pages (submit, explore, validator, etc.)
-│   │   ├── components/         # 25+ React components
-│   │   ├── lib/                # API client & utilities
-│   │   └── styles/             # Tailwind CSS
-│   └── package.json
+├── frontend/              # Next.js web application
+│   ├── src/app/          # Pages: submit, explore, validator
+│   ├── src/components/   # React components
+│   └── src/lib/          # API client, utilities
 │
 ├── services/
-│   ├── backend/                # Node.js Express API
-│   │   ├── src/
-│   │   │   ├── routes/         # API endpoints
-│   │   │   ├── controllers/   # Request handlers
-│   │   │   ├── services/       # Business logic (IPFS, AI, blockchain)
-│   │   │   ├── jobs/           # Async tasks (transcribe, symbolize)
-│   │   │   ├── middleware/     # Auth, validation, rate limiting
-│   │   │   └── utils/          # Helpers
-│   │   ├── prisma/
-│   │   │   └── schema.prisma   # Database models
-│   │   └── package.json        # ✅ FIXED: All dependencies added
+│   ├── backend/          # Express API server
+│   │   ├── src/routes/   # API endpoints
+│   │   ├── src/services/ # IPFS, AI, blockchain services
+│   │   └── prisma/       # Database schema
 │   │
-│   ├── agentverse/             # Python Autonomous Agents
-│   │   ├── agents/
-│   │   │   ├── ingest_agent.py
-│   │   │   ├── transcribe_agent.py
-│   │   │   ├── symbolizer_agent.py
-│   │   │   ├── validator_agent.py
-│   │   │   └── query_agent.py
-│   │   ├── run_agents.py
-│   │   └── requirements.txt
-│   │
-│   ├── metta-integration/      # Symbolic AI
-│   │   ├── example_atoms.met
-│   │   └── metta_client.py
-│   │
-│   └── docker-compose.yml      # Postgres, Redis, IPFS
+│   └── agentverse/       # Python AI agents
+│       └── agents/       # Transcribe, symbolize, validate
 │
-├── smartcontracts/             # Solidity Smart Contracts
-│   ├── contracts/
-│   │   ├── UjuziRegistry.sol   # Main entry registry
-│   │   ├── CulturalToken.sol   # Reputation system
-│   │   └── ValidatorManager.sol # Validator governance
-│   ├── scripts/
-│   │   └── deploy.js
-│   ├── test/
-│   └── hardhat.config.js
+├── smartcontracts/       # Solidity blockchain contracts
+│   ├── contracts/        # UjuziRegistry, CulturalToken
+│   └── scripts/          # Deployment scripts
 │
-├── docs/                       # 📚 Comprehensive Documentation
-│   ├── PROJECT_ANALYSIS.md     # Complete project audit
-│   ├── SETUP_GUIDE.md          # Step-by-step setup
-│   ├── API_DOCUMENTATION.md    # API reference
-│   ├── DEMO_SCRIPT.md          # 5-min presentation guide
-│   ├── IMPLEMENTATION_SUMMARY.md # Technical deep dive
-│   ├── MISSING_FILES_CHECKLIST.md # Action items
-│   └── QUICK_START_README.md   # Fast setup guide
+├── docs/                 # Documentation
+│   └── API_DOCUMENTATION.md
 │
-├── infra/                      # Deployment & CI/CD
-│   ├── docker/
-│   └── scripts/
-│
-└── README.md                   # ← You are here
+├── README.md             # This file
+└── SETUP.md             # Setup guide
 ```
-
----
-
-## 📚 Documentation
-
-- **[SETUP.md](./SETUP.md)** - Quick start guide to run the project
-- **[API Documentation](docs/API_DOCUMENTATION.md)** - API endpoint reference
-- **README.md** - Complete project overview (you are here)
 
 ---
 
@@ -359,9 +278,9 @@ AfriVerse/
 
 **Base URL:** `http://localhost:4000/api`
 
-### Core Endpoints
+### Main Endpoints
 
-#### Submit Knowledge
+#### Submit Cultural Knowledge
 ```http
 POST /api/submit
 Content-Type: multipart/form-data
@@ -371,7 +290,6 @@ title: "Traditional Healing Practice"
 language: "sw"
 community: "Kikuyu"
 license: "CC-BY-NC-4.0"
-consent: true
 ```
 
 #### Get Entry
@@ -379,18 +297,7 @@ consent: true
 GET /api/entries/:id
 ```
 
-#### Validate Entry
-```http
-POST /api/validate/:entryId
-Content-Type: application/json
-
-{
-  "decision": "approved",
-  "notes": "Culturally accurate representation"
-}
-```
-
-#### Query Knowledge
+#### Query Knowledge (AI Reasoning)
 ```http
 POST /api/entries/query
 Content-Type: application/json
@@ -401,206 +308,115 @@ Content-Type: application/json
 }
 ```
 
-#### Search
+#### Validate Entry (For Validators)
 ```http
-GET /api/entries/search/all?q=medicine&community=Kikuyu
+POST /api/validate/:entryId
+Content-Type: application/json
+
+{
+  "decision": "approved",
+  "notes": "Culturally accurate"
+}
 ```
 
 **Rate Limits:**
-- General API: 100 requests / 15 min per IP
-- Submit endpoint: 10 requests / hour per IP
+- General API: 100 requests / 15 min
+- Submit endpoint: 10 requests / hour
 
-**Full API Docs:** [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
+**See [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md) for full API reference.**
 
 ---
 
 ## ⛓️ Smart Contracts
 
-Deployed on **Linea Goerli Testnet** (see addresses in [Live Demo](#-live-demo--verification) section)
+**Network:** Linea Goerli Testnet  
+**Explorer:** https://goerli.lineascan.build/
 
 ### UjuziRegistry (Main Contract)
 
-**Core Functions:**
+Manages cultural knowledge entries, validation, and provenance.
+
+**Key Functions:**
+
 ```solidity
+// Submit new cultural knowledge
 function submitEntry(
-    bytes32 cid,
-    LicenseType license,
-    string calldata language,
-    string calldata community,
-    bytes32[] calldata atomHashes
+    bytes32 cid,           // IPFS content hash
+    LicenseType license,   // Usage license
+    string language,       // e.g., "sw" for Swahili
+    string community,      // e.g., "Kikuyu"
+    bytes32[] atomHashes   // MeTTa atom hashes
 ) external returns (uint256 entryId)
 
+// Validate an entry (validators only)
 function validateEntry(
     uint256 entryId,
     bool approve,
-    string calldata notes
+    string notes
 ) external onlyValidator
 
+// Get entry details
 function getEntry(uint256 entryId) 
     external view returns (CulturalEntry memory)
 ```
 
 **Features:**
-- Entry submission with IPFS CID
-- Community-based validation (multi-sig style)
-- License enforcement (Community Only, CC-BY-NC, Research, Open)
-- Event-driven provenance
-- Cultural token rewards
+- Multi-signature validation (3 validators required)
+- License enforcement (Community Only, CC-BY-NC, Research, Open Access)
+- Event logging for off-chain indexing
+- Reputation token rewards (CulturalToken minted on validation)
 
-**Gas Costs:** ~$0.05 per entry on Linea L2
+**Gas Cost:** ~$0.05 per entry on Linea L2
 
-**Contract Verification:** View on [LineScan](https://goerli.lineascan.build/)
+### CulturalToken
+
+Non-transferable reputation token (ERC20) earned through contributions and validation.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! AfriVerse is built for the community, by the community.
+We welcome contributors! AfriVerse is built for communities, by communities.
 
 ### How to Contribute
 
-1. **Fork the repository**
-2. **Create a feature branch:** `git checkout -b feature/amazing-feature`
-3. **Commit changes:** `git commit -m 'Add amazing feature'`
-4. **Push to branch:** `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-idea`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-idea`
+5. Open a Pull Request
 
 ### Development Guidelines
 
-- Write clean, documented code (JSDoc for JS, docstrings for Python)
+- Write clean, documented code (JSDoc for JavaScript, docstrings for Python)
 - Add tests for new features
-- Follow existing code style
-- Update documentation
-- Keep PRs focused and atomic
+- Follow existing code style (Prettier + ESLint configured)
+- Update documentation as needed
 
-### Areas for Contribution
+### Areas Where We Need Help
 
-- 🌐 **New Language Support** - Add Amharic, Zulu, etc.
-- 🎨 **UI/UX Improvements** - Mobile responsiveness, accessibility
-- 🤖 **Agent Enhancements** - Better symbolization algorithms
-- 🧪 **Testing** - Unit tests, integration tests, E2E tests
+- 🌐 **Language Support** - Add more African languages
+- 🎨 **UI/UX** - Improve accessibility and mobile experience
+- 🤖 **AI** - Enhance MeTTa symbolization accuracy
+- 🧪 **Testing** - Write unit and integration tests
 - 📚 **Documentation** - Tutorials, guides, translations
-- 🔐 **Security** - Audits, vulnerability fixes
+- 🔐 **Security** - Smart contract audits, vulnerability testing
 
 ---
 
-## 🏆 BGI25 Hackathon Submission
-
-**Event:** BGI25 - AGI Without Borders | **Track:** AGI + Cultural Memory  
-**Dates:** October 14-25, 2025 | **Prize Pool:** $5,000 USD (4 winners)
-
-### 📊 Evaluation Score: 85/100 → 95/100 (with deployment)
-
-| Criteria | Score | Max | Status |
-|----------|-------|-----|--------|
-| **Innovation & Creativity** | 22/25 | 25 | ✅ Unique MeTTa symbolic AI |
-| **Technical Implementation** | 18/25 | 25 | ⚠️ -7 (needs deployment) |
-| **Practicality & Impact** | 18/20 | 20 | ✅ Real cultural crisis |
-| **Presentation & Docs** | 10/15 | 15 | ❌ -5 (needs demo video) |
-| **Theme Alignment** | 14/15 | 15 | ✅ Perfect AGI fit |
-| **TOTAL** | **82/100** | 100 | **Top 30% → Top 10%** |
-
-### 📝 Deliverables Status
-
-| Item | Code | Deployed | Priority |
-|------|------|----------|----------|
-| Source Code | 100% | ✅ GitHub | Complete |
-| Documentation | 100% | ✅ Complete | Complete |
-| Smart Contracts | 100% | ❌ **NEEDED** | 🔴 CRITICAL |
-| Demo Video | 40% | ❌ **NEEDED** | 🔴 CRITICAL |
-| Live Demo | 85% | ❌ Optional | 🟡 High |
-
-### 🎯 Why AfriVerse Wins
-
-**Unique Innovation:**
-- ⭐ **MeTTa Symbolic AI** - Only cultural platform with AGI reasoning (not just storage)
-- ⭐ **Multi-Modal Agents** - Autonomous processing pipeline (transcribe → symbolize → validate)
-- ⭐ **Blockchain Provenance** - Immutable cultural attribution on Linea zkEVM
-
-**Technical Excellence:**
-- 7 technologies integrated: Next.js + Express + Solidity + MeTTa + IPFS + Python agents + PostgreSQL
-- Production-ready code (88/100 quality score)
-- Senior-level architecture (microservices, event-driven, job queues)
-
-**Real-World Impact:**
-- Addresses cultural extinction crisis (UNESCO reports 43% languages endangered)
-- Democratizes AI training data (empowers underrepresented communities)
-- Aligns with Ben Goertzel's vision: "AGI must benefit all, not just the few"
-
-**Competitive Edge:**
-- **vs Typical Projects:** Better code (+18%), better docs (+45%), unique innovation (+17%)
-- **Differentiation:** Most projects = basic storage; AfriVerse = AGI reasoning + economics
-
-### 👥 Team
+## 👥 Team
 
 **Developer:** Edwin Mwiti  
 **Institution:** Kirinyaga University (Electronics & Computer Engineering)  
-**Location:** Nairobi, Kenya  
+**Location:** Nairobi, Kenya 🇰🇪  
 **GitHub:** [@Edwin420s](https://github.com/Edwin420s)  
 **Email:** edwin420@outlook.com
 
-### ⏱️ Time Investment vs Return
+### Hackathon Submission
 
-**Remaining Work:** 5-10 hours (deploy contracts + record video)  
-**Potential Prize:** $1,250+ (if win 1 of 4 prizes)  
-**ROI:** $125+/hour + portfolio value + learning + visibility
-
----
-
-## 🎯 Roadmap
-
-### Phase 1: MVP (Current - BGI25 Hackathon) ✅
-- ✅ Voice-first submission
-- ✅ IPFS storage
-- ✅ AI transcription & symbolization
-- ✅ Blockchain anchoring
-- ✅ Community validation
-- ✅ Knowledge query
-
-### Phase 2: Post-Hackathon (Q4 2025)
-- 📱 Mobile app (React Native)
-- 🌍 More languages (Amharic, Yoruba, Zulu)
-- 🔗 SingularityNET marketplace integration
-- 🧪 Full MeTTa runtime
-- 📊 Analytics dashboard
-
-### Phase 3: Scale (2026)
-- 🤝 Federated node architecture
-- 🎓 University research partnerships
-- 🏛️ Cultural organization collaborations
-- 💰 Grant funding & sustainability
-- 🌐 Cross-cultural knowledge exchange
-
----
-
-## 🛡️ Security
-
-AfriVerse implements multiple security layers:
-
-- **Authentication:** JWT tokens with wallet signatures
-- **Authorization:** Role-based access control (RBAC)
-- **Rate Limiting:** 100 req/15min general, 10/hour submit
-- **Input Validation:** Zod schemas on all endpoints
-- **CORS:** Whitelist only trusted origins
-- **Helmet.js:** Security headers
-- **Smart Contract Audits:** OpenZeppelin patterns
-
-**Report Security Issues:** eduedwyn5@gmail.com (PGP key available)
-
----
-
-## 📊 Project Status
-
-| Component | Code | Deployed | Status |
-|-----------|------|----------|--------|
-| Frontend | 100% | ❌ Local | ✅ Code Complete |
-| Backend API | 100% | ❌ Local | ✅ Code Complete |
-| Smart Contracts | 100% | ❌ Not Deployed | ⚠️ **NEEDS DEPLOYMENT** |
-| AI Agents | 100% | ✅ Ready | ✅ Functional |
-| Documentation | 100% | ✅ Complete | ✅ Comprehensive |
-| Demo Video | 40% | ❌ Not Recorded | ⚠️ **CRITICAL** |
-
-**Overall: 85% Complete** - See [IMMEDIATE_ACTION_CHECKLIST.md](./IMMEDIATE_ACTION_CHECKLIST.md) for remaining tasks!
+**Event:** BGI25 Hackathon - AGI Without Borders  
+**Track:** AGI + Cultural Memory  
+**Dates:** October 14-25, 2025
 
 ---
 
@@ -611,31 +427,30 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ### Open Source Acknowledgments
 
 Built with amazing open-source tools:
-- **SingularityNET** - Decentralized AI marketplace
+- **SingularityNET** - MeTTa and decentralized AI vision
 - **Fetch.AI** - Autonomous agent framework
-- **Linea** - zkEVM Layer 2
-- **OpenAI** - Whisper transcription
+- **Linea** - zkEVM Layer 2 blockchain
+- **OpenAI** - Whisper transcription model
 - **HuggingFace** - Open AI models
 - **Pinata** - IPFS pinning service
+- **OpenZeppelin** - Smart contract security standards
 
 ---
 
-## 📞 Contact
-
-**Developer:** Edwin Mwiti  
-**Email:** eduedwyn5@gmail.com  
-**GitHub:** [@Edwin420s](https://github.com/Edwin420s)  
-**Location:** Nairobi, Kenya 🇰🇪
-
-**Hackathon Community:**
-- WhatsApp: [BGI25 Community](https://chat.whatsapp.com/Le91NfrRsJT1Dk9fgttoV1)
-- Website: [BGI25 Hackathon](https://bgi25.com/)
+## 📞 Contact & Links
 
 **Project Links:**
 - **Repository:** https://github.com/Edwin420s/AfriVerse
-- **Demo:** Coming soon
-- **Documentation:** [docs/](docs/)
-- **Smart Contracts:** [LineScan](https://goerli.lineascan.build/)
+- **Setup Guide:** [SETUP.md](./SETUP.md)
+- **API Docs:** [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
+
+**Hackathon:**
+- **BGI25 Website:** https://bgi25.com/
+- **WhatsApp Community:** https://chat.whatsapp.com/Le91NfrRsJT1Dk9fgttoV1
+
+**Support:**
+- Email: edwin420@outlook.com
+- Open an issue on GitHub
 
 ---
 
@@ -643,18 +458,15 @@ Built with amazing open-source tools:
 
 Special thanks to:
 - **BGI25 Organizers** - For hosting this incredible hackathon
-- **SingularityNET Team** - For MeTTa and decentralized AI vision
-- **ASI Alliance** - For AGI alignment principles
+- **SingularityNET & ASI Alliance** - For the vision of beneficial AGI
 - **Local Elders** - For sharing cultural wisdom
-- **Open Source Community** - For amazing tools
+- **Open Source Community** - For amazing tools and libraries
 
 ---
 
-## 🌟 Star Us!
+## 🌟 Support This Project
 
-If AfriVerse resonates with you, please ⭐ **star this repository** to show your support!
-
-Together, let's build AGI that learns from everyone, not just those who code in English.
+If AfriVerse resonates with you, please ⭐ **star this repository** and share it with others who care about cultural preservation and ethical AI!
 
 ---
 
@@ -664,297 +476,4 @@ Together, let's build AGI that learns from everyone, not just those who code in 
 
 *Built with ❤️ in Kenya for the world*
 
-[![Star on GitHub](https://img.shields.io/github/stars/Edwin420s/AfriVerse?style=social)](https://github.com/Edwin420s/AfriVerse)
-[![Follow on GitHub](https://img.shields.io/github/followers/Edwin420s?style=social)](https://github.com/Edwin420s)
-
 </div>
-
-```bash
-cd services/backend
-npm install
-npm run dev
-```
-
-4. Run agents
-
-```bash
-cd services/agentverse
-pip install -r requirements.txt
-python main.py  # or run individual agents as per your process
-```
-
-5. Run frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-# open http://localhost:3000
-```
-
----
-
-## Environment Variables
-
-Create local env files as needed. Examples:
-
-Backend (`services/backend/.env.local`):
-
-```env
-PORT=4000
-WEB3_PROVIDER=https://linea-sepolia.rpc
-PRIVATE_KEY=...
-CONTRACT_ADDRESS=0x...
-PINATA_JWT=...
-REDIS_URL=redis://localhost:6379
-DATABASE_URL=postgresql://user:pass@localhost:5432/afriverse
-METTA_API_URL=http://localhost:8080
-OPENAI_API_KEY=...
-HUGGINGFACE_TOKEN=...
-```
-
-Frontend (`frontend/.env.local`):
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
-NEXT_PUBLIC_IPFS_GATEWAY=https://ipfs.io/ipfs
-NEXT_PUBLIC_CONTRACT_ADDRESS=0x...
-NEXT_PUBLIC_WEB3_STORAGE_TOKEN=...
-```
-
-Agents (`services/agentverse/.env`):
-
-```env
-BACKEND_URL=http://localhost:4000
-OPENAI_API_KEY=...
-HUGGINGFACE_TOKEN=...
-```
-
----
-
-## API Endpoints (key)
-
-Aligned endpoints used by agents and frontend:
-
-- Submissions (`services/backend/src/routes/submit.js`)
-  - `POST /api/submit` – create entry (multipart file upload)
-  - `GET /api/submit/status/:entryId` – submission status
-  - `PATCH /api/submit/:entryId/transcript` – update transcript
-  - `PATCH /api/submit/:entryId/atoms` – update atoms
-  - `POST /api/submit/symbolize` – symbolize transcript to MeTTa atoms
-  - `POST /api/submit/transcribe` – transcribe uploaded audio
-
-- Entries (`services/backend/src/routes/entries.js`)
-  - `GET /api/entries/:id` – get entry
-  - `GET /api/entries` – list entries
-  - `GET /api/entries/search/all` – search
-  - `POST /api/entries/query` – knowledge query
-
-- Validate (`services/backend/src/routes/validate.js`)
-  - `GET /api/validate/pending` – pending validations
-  - `POST /api/validate/:entryId` – submit validation
-
-- Health/Metrics/Community – see respective files in `services/backend/src/routes/`.
-
----
-
-## Services Overview
-
-- `BlockchainService` – ethers.js client for anchoring/validation events.
-- `IPFSService` – Pinata integration for upload/fetch/unpin.
-- `TranscriptionService` – OpenAI Whisper with HuggingFace fallback.
-- `SymbolizerService` – LLM prompt to extract MeTTa atoms (fallback heuristics).
-- `MeTTaService` – MeTTa runtime client with in-memory fallback.
-- `CacheService` – Redis helpers.
-- `CommunityService`, `MetricsService`, `HealthService` – domain/services utilities.
-
-Agents (`services/agentverse/agents/`):
-
-- `ingest_agent.py` – downloads from IPFS, transcribes, updates backend.
-- `transcribe_agent.py` – speech-to-text (OpenAI/HF) and backend update.
-- `symbolizer_agent.py` – converts transcript to atoms, validates format.
-- `validator_agent.py` – cultural sensitivity + consistency checks.
-- `query_agent.py` – forwards queries to backend and returns structured answers.
-
-MeTTa Integration (`services/metta-integration/`):
-
-- `metta_client.py`, `example_atoms.met`, `README.md` for local reasoning tests.
-
----
-
-## Dev with Docker
-
-Use `services/docker-compose.yml` for local Postgres/Redis, optionally the backend. Example:
-
-```bash
-cd services
-docker compose up -d
-```
-
-Update `.env` to point to these services (e.g., `DATABASE_URL`, `REDIS_URL`).
-
----
-
-## Contributing
-
-1. Fork and create a feature branch.
-2. Keep services documented (JSDoc/docstrings) and aligned with shared endpoints.
-3. Add tests where feasible (service unit tests, mock integrations).
-4. Open a PR with a clear description and screenshots for UI changes.
-
-## Frontend Overview
-
-AfriVerse is a decentralized platform for preserving African indigenous knowledge using AGI (Artificial General Intelligence). This frontend application provides an intuitive interface for contributors, validators, and explorers to interact with the cultural knowledge graph.
-
-## Features
-
-- 🎤 **Voice-First Submission**: Record cultural knowledge directly in native languages
-- 🧠 **AI-Powered Processing**: View how AGI structures and understands cultural content
-- 🛡️ **Ethical Consent**: Comprehensive consent flows respecting cultural rights
-- 🔍 **Knowledge Exploration**: Interactive graph visualization of cultural connections
-- 👥 **Community Validation**: Crowdsourced validation ensuring cultural accuracy
-- 🌐 **Multilingual Support**: Support for multiple African languages
-
-## Tech Stack
-
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS with custom design system
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **State Management**: React Hooks
-- **Web3 Integration**: ethers.js (for wallet connectivity)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/afriverse/frontend.git
-cd afriverse-frontend
-
-```
-Install dependencies:
-```
-npm install
-```
-
-Run the development server:
-
-```
-npm run dev
-```
-Open http://localhost:3000 in your browser.
-
-Project Structure
-```
-...
-frontend/
-├── package.json
-├── next.config.js
-├── tailwind.config.js
-├── postcss.config.js
-├── jsconfig.json
-├── middleware.js
-├── .env.local.example
-├── public/
-│   ├── assets/
-│   │   ├── icons/
-│   │   └── images/
-│   └── favicon.ico
-├── src/
-│   ├── app/
-│   │   ├── layout.js
-│   │   ├── page.js
-│   │   ├── error.js
-│   │   ├── not-found.js
-│   │   ├── submit/
-│   │   │   └── page.js
-│   │   ├── explore/
-│   │   │   └── page.js
-│   │   ├── entry/
-│   │   │   └── [id]/
-│   │   │       └── page.js
-│   │   ├── validator/
-│   │   │   └── page.js
-│   │   └── profile/
-│   │       └── page.js
-│   ├── components/
-│   │   ├── Header.jsx
-│   │   ├── Footer.jsx
-│   │   ├── SubmitWizard.jsx
-│   │   ├── VoiceRecorder.jsx
-│   │   ├── NodeGraph.jsx
-│   │   ├── ReasoningTrace.jsx
-│   │   ├── ConsentModal.jsx
-│   │   ├── LoadingSpinner.jsx
-│   │   ├── ErrorBoundary.jsx
-│   │   ├── Web3Provider.jsx
-│   │   └── WalletConnect.jsx
-│   ├── hooks/
-│   │   ├── useLocalStorage.js
-│   │   └── useAudioRecorder.js
-│   ├── lib/
-│   │   └── api.js
-│   ├── utils/
-│   │   ├── validation.js
-│   │   └── constants.js
-│   └── styles/
-│       └── globals.css
-└── README.md
-```
-## Key Components
-### SubmitWizard
-Multi-step form for contributing cultural knowledge with:
-
-Content type selection
-
-Voice recording and file upload
-
-Metadata collection
-
-Consent and license agreement
-
-Submission review
-
-## VoiceRecorder
-Audio recording component with:
-
-Real-time recording visualization
-
-Playback and deletion controls
-
-Mobile-friendly interface
-
-## NodeGraph
-Interactive knowledge graph visualization showing:
-
-Cultural entities and relationships
-
-Symbolic AI reasoning connections
-
-Community validation status
-
-## ReasoningTrace
-Displays AI processing results with:
-
-Natural language explanations
-
-Technical symbolic representations
-
-Cultural context preservation
-
-## Environment Variables
-
-Create a .env.local file: 
-```
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
-NEXT_PUBLIC_IPFS_GATEWAY=https://ipfs.io/ipfs
-NEXT_PUBLIC_CONTRACT_ADDRESS=0x...
-```
-
