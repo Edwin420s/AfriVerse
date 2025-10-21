@@ -100,7 +100,7 @@ class IngestAgent(Agent):
     
     async def update_backend(self, entry_id: int, transcript: str):
         """Update backend entry with transcription result and status."""
-        update_url = f"{self.backend_url}/api/entries/{entry_id}/transcript"
+        update_url = f"{self.backend_url}/api/submit/{entry_id}/transcript"
         
         data = {
             'transcript': transcript,

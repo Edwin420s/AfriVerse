@@ -70,7 +70,7 @@ class SymbolizerAgent(Agent):
     
     async def extract_atoms(self, transcript: str, context: dict) -> list:
         """Call backend symbolizer endpoint to extract MeTTa atoms from transcript."""
-        symbolizer_url = f"{self.backend_url}/api/symbolize"
+        symbolizer_url = f"{self.backend_url}/api/submit/symbolize"
         
         data = {
             'transcript': transcript,
@@ -115,7 +115,7 @@ class SymbolizerAgent(Agent):
     
     async def update_backend(self, entry_id: int, atoms: list):
         """PATCH extracted atoms and status to backend entry."""
-        update_url = f"{self.backend_url}/api/entries/{entry_id}/atoms"
+        update_url = f"{self.backend_url}/api/submit/{entry_id}/atoms"
         
         data = {
             'atoms': atoms,
