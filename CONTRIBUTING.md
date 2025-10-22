@@ -36,7 +36,7 @@ Thank you for your interest in contributing to AfriVerse! This document provides
 
 ```bash
 # 1. Fork and clone the repository
-git clone https://github.com/YOUR_USERNAME/AfriVerse.git
+git clone https://github.com/Edwin420s/AfriVerse.git
 cd AfriVerse
 
 # 2. Install dependencies

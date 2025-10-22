@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, Menu, X, Users, Book, Shield, User } from 'lucide-react'
 import WalletConnect from './WalletConnect'
@@ -25,28 +26,28 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-3"
           >
-            <a href="/" className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center space-x-3">
               <div className="gold-gradient p-2 rounded-lg">
                 <Brain className="w-6 h-6 text-primary-navy" />
               </div>
               <span className="text-xl font-cormorant font-bold gradient-text">
                 AfriVerse
               </span>
-            </a>
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-2 text-primary-white/80 hover:text-primary-cyan transition-colors duration-200"
-              >
-                {item.icon}
-                <span>{item.name}</span>
-              </motion.a>
+              <Link key={item.name} href={item.href}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center space-x-2 text-primary-white/80 hover:text-primary-cyan transition-colors duration-200 cursor-pointer"
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </motion.div>
+              </Link>
             ))}
           </div>
 
@@ -79,15 +80,15 @@ export default function Header() {
             >
               <div className="py-4 space-y-4">
                 {navigation.map((item) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center space-x-3 text-primary-white/80 hover:text-primary-cyan transition-colors duration-200 py-2"
-                  >
-                    {item.icon}
-                    <span>{item.name}</span>
-                  </motion.a>
+                  <Link key={item.name} href={item.href}>
+                    <motion.div
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center space-x-3 text-primary-white/80 hover:text-primary-cyan transition-colors duration-200 py-2 cursor-pointer"
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </motion.div>
+                  </Link>
                 ))}
                 <div className="pt-4 border-t border-primary-cyan/20 flex items-center justify-between">
                   <NotificationBell />

@@ -1,10 +1,12 @@
 'use client'
 import { motion } from 'framer-motion'
 import { Brain, Users, Shield, Globe, ArrowRight, Star } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export default function Home() {
+  const router = useRouter()
   const features = [
     {
       icon: <Brain className="w-8 h-8" />,
@@ -56,14 +58,16 @@ export default function Home() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="gold-gradient text-primary-navy px-8 py-4 rounded-lg font-semibold text-lg flex items-center gap-2"
+                onClick={() => router.push('/submit')}
+                className="gold-gradient text-primary-navy px-8 py-4 rounded-lg font-semibold text-lg flex items-center gap-2 justify-center cursor-pointer"
               >
                 Contribute Wisdom <ArrowRight className="w-5 h-5" />
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="border-2 border-primary-cyan text-primary-cyan px-8 py-4 rounded-lg font-semibold text-lg"
+                onClick={() => router.push('/explore')}
+                className="border-2 border-primary-cyan text-primary-cyan px-8 py-4 rounded-lg font-semibold text-lg cursor-pointer"
               >
                 Explore Knowledge
               </motion.button>
@@ -185,14 +189,16 @@ export default function Home() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="gold-gradient text-primary-navy px-8 py-4 rounded-lg font-semibold text-lg"
+                onClick={() => router.push('/submit')}
+                className="gold-gradient text-primary-navy px-8 py-4 rounded-lg font-semibold text-lg cursor-pointer"
               >
                 Start Contributing
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="border-2 border-primary-gold text-primary-gold px-8 py-4 rounded-lg font-semibold text-lg"
+                onClick={() => router.push('/validator')}
+                className="border-2 border-primary-gold text-primary-gold px-8 py-4 rounded-lg font-semibold text-lg cursor-pointer"
               >
                 Become a Validator
               </motion.button>
