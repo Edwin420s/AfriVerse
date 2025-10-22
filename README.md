@@ -25,6 +25,16 @@
 
 ---
 
+## 🔗 Quick Links
+
+**For Judges & Reviewers:**
+- 🎥 **[3-Minute Demo Video](https://www.youtube.com/watch?v=hDPMGjdSVfM)** - See AfriVerse in action
+- 📊 **[BGI25 Compliance Status](./docs/IMPLEMENTATION_STATUS.md)** - Technical implementation checklist
+- 📦 **[GitHub Repository](https://github.com/Edwin420s/AfriVerse)** - Full source code
+- 📖 **[Setup Guide](./SETUP.md)** - Get started in 5 minutes
+
+---
+
 ## 📋 Executive Summary
 
 **AfriVerse** is a decentralized AGI-powered platform that preserves, translates, and makes accessible African indigenous knowledge using symbolic AI (MeTTa), autonomous agents (Agentverse), blockchain provenance (Linea zkEVM), and decentralized storage (IPFS).
@@ -80,7 +90,7 @@ AfriVerse bridges **ancestral wisdom** with **future AGI systems**, ensuring Afr
 
 ### 🤝 Community
 - [Contributing](#-contributing)
-- [Hackathon Details](#-hackathon-details)
+- [BGI25 Compliance Status](./docs/IMPLEMENTATION_STATUS.md)
 - [Team & Contact](#-team--contact)
 - [License](#-license)
 - [Acknowledgments](#-acknowledgments)
@@ -169,8 +179,6 @@ AfriVerse combines four breakthrough technologies:
 - **Community-owned and validated** by local experts
 - **AGI-compatible** for future AI training and research
 - **Transparent and explainable** — see how AI uses the knowledge
-
----
 
 ---
 
@@ -512,8 +520,8 @@ Content-Type: application/json
 
 ## ⛓️ Smart Contracts
 
-**Network:** Linea Goerli Testnet  
-**Explorer:** https://goerli.lineascan.build/
+**Network:** Linea Sepolia Testnet  
+**Explorer:** https://sepolia.lineascan.build/
 
 ### UjuziRegistry (Main Contract)
 
