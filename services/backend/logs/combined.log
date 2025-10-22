@@ -14,3 +14,9 @@
 [33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:05:22.292Z"}
 [33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:07:51.433Z"}
 [33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:07:52.661Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:15.516Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:16.757Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:34.609Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:35.842Z"}
+[33mwarn[39m: Redis not available, cache features will be disabled {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:47.086Z"}
+[33mwarn[39m: Redis connection failed after 3 attempts, operating without cache {"service":"afriverse-backend","timestamp":"2025-10-21T23:57:48.323Z"}

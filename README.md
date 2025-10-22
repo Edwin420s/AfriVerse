@@ -1,36 +1,95 @@
-# AfriVerse 🌍🤖
+# 🌍 AfriVerse: Preserving Wisdom Through AGI
 
-**Where Ancestral Knowledge Meets Artificial Intelligence**
+### **Where Ancestral Knowledge Meets Artificial General Intelligence**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.17-orange.svg)](https://soliditylang.org/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB.svg)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-000000.svg)](https://nextjs.org/)
 
-> **A decentralized platform for preserving indigenous knowledge using AI, blockchain, and community governance.**
+---
 
-AfriVerse uses symbolic AI (MeTTa), blockchain (Linea zkEVM), and IPFS to help communities preserve their cultural heritage in a way that AI systems can understand and reason with—not just store.
+## 🏆 BGI25 Hackathon Submission
+
+**Event:** BGI25 Hackathon - "AGI Without Borders"  
+**Track:** AGI + Cultural Memory — Preserve and Translate Indigenous Knowledge using Symbolic AI  
+**Dates:** October 14-25, 2025  
+**Developer:** Edwin Mwiti ([@Edwin420s](https://github.com/Edwin420s))  
+**Institution:** Kirinyaga University, Kenya 🇰🇪  
+**Email:** eduedwyn5@gmail.com
+
+> **Hackathon Mission:** Build real-world, ethically rooted, AGI-aligned projects using decentralized tools, rooted in cultural intelligence, local needs, and a global future.
+
+---
+
+## 📋 Executive Summary
+
+**AfriVerse** is a decentralized AGI-powered platform that preserves, translates, and makes accessible African indigenous knowledge using symbolic AI (MeTTa), autonomous agents (Agentverse), blockchain provenance (Linea zkEVM), and decentralized storage (IPFS).
+
+### The Crisis
+- **43% of world languages are endangered** (UNESCO)
+- **Cultural knowledge holders dying** without digital preservation
+- **AI systems trained only on Western datasets**, ignoring non-Western wisdom
+- **No mechanism for communities to own** their cultural data
+
+### Our Solution
+A **voice-first, decentralized knowledge vault** where elders and cultural practitioners can:
+- 🎙️ **Record knowledge** in native languages (no typing required)
+- 🧠 **Convert to symbolic AI format** (MeTTa atoms for AGI reasoning)
+- ⛓️ **Prove ownership** through blockchain provenance
+- 🤝 **Community validation** by cultural experts
+- 🌐 **Query with natural language** and get explainable AI reasoning
+
+### Impact
+AfriVerse bridges **ancestral wisdom** with **future AGI systems**, ensuring African cultures are represented, preserved, and accessible for generations to come.
 
 ---
 
 ## 📖 Table of Contents
 
+### 🎯 Overview
+- [Executive Summary](#-executive-summary)
 - [What is AfriVerse?](#-what-is-afriverse)
+- [The Problem We're Solving](#-the-problem-were-solving)
+- [Our Solution](#-our-solution)
 - [Why It Matters](#-why-it-matters)
-- [How It Works](#-how-it-works)
-- [Key Features](#-key-features)
+
+### 🔧 Technical Details
+- [How It Works (Architecture)](#-how-it-works)
 - [Technology Stack](#-technology-stack)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [API Overview](#-api-overview)
+- [System Architecture](#-system-architecture)
+- [Database Schema](#-database-schema)
 - [Smart Contracts](#-smart-contracts)
+- [AI & Agent System](#-ai--agent-system)
+
+### 🚀 Getting Started
+- [Prerequisites](#-prerequisites)
+- [Installation & Setup](#-installation--setup)
+- [Development Workflow](#-development-workflow)
+- [Deployment](#-deployment)
+
+### 📚 Documentation
+- [Project Structure](#-project-structure)
+- [API Documentation](#-api-documentation)
+- [Frontend Features](#-frontend-features)
+- [Backend Services](#-backend-services)
+- [MeTTa Integration](#-metta-integration)
+
+### 🤝 Community
 - [Contributing](#-contributing)
-- [Team](#-team)
+- [Hackathon Details](#-hackathon-details)
+- [Team & Contact](#-team--contact)
 - [License](#-license)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
 ## 🎯 What is AfriVerse?
+
+### Vision Statement
+**"To create a living, breathing digital archive of African indigenous knowledge that AGI systems can understand, reason with, and learn from—while ensuring communities maintain ownership and control."**
 
 AfriVerse is a **decentralized cultural preservation platform** that addresses the global crisis of indigenous knowledge loss. We combine:
 
@@ -40,44 +99,165 @@ AfriVerse is a **decentralized cultural preservation platform** that addresses t
 - **🤖 Autonomous Agents** - Automated processing and validation workflows
 - **👥 Community Governance** - Cultural experts validate knowledge accuracy
 
-### The Problem
+---
 
-1. **Cultural Extinction** - UNESCO reports 43% of world languages are endangered
-2. **AI Bias** - Current AGI systems ignore non-Western cultural wisdom
-3. **Data Colonization** - Big tech monopolizes training data without community benefit
+## 🚨 The Problem We're Solving
 
-### Our Solution
+### 1. Cultural Knowledge Extinction
+- **2,500+ African languages** at risk of disappearing
+- **Oral traditions** dying with elders who are not digitally connected
+- **No systematic preservation** of medicinal plant knowledge, proverbs, rituals
+- **Colonial disruption** has already erased countless cultural practices
 
-A voice-first platform where elders and cultural practitioners can:
-- Record knowledge in their native language (no typing required)
-- Maintain ownership through blockchain provenance
-- Earn reputation tokens for contributions
-- Ensure cultural accuracy through community validation
+### 2. AI Colonialism & Bias
+- **Western-centric training data** dominates AI models
+- **African languages underrepresented** in NLP datasets
+- **Cultural context ignored** by current AGI systems
+- **No African participation** in shaping AGI development
+
+### 3. Data Exploitation
+- **Big Tech extracts** cultural data without permission
+- **No attribution** or compensation for communities
+- **Centralized platforms** control access and monetization
+- **Communities powerless** over their own knowledge
+
+### 4. Lack of Structured Cultural Reasoning
+- Traditional databases can only **store and search** text
+- No ability for AI to **reason symbolically** about cultural relationships
+- **Lost connections** between plants, practices, beliefs, and languages
+- Cannot answer queries like: *"What Kikuyu practices involve aloe vera for healing burns?"*
 
 ---
 
-## 🌟 Why It Matters
+## 💡 Our Solution
 
-### For Communities
+### A Decentralized Cultural Memory System Powered by AGI
 
-- **Preserve Cultural Heritage** - Before it's lost forever
-- **Maintain Ownership** - Blockchain proves who contributed what
-- **Earn Recognition** - Reputation system rewards cultural experts
-- **Control Access** - Choose licenses (Community Only, Research, Open Access)
+AfriVerse combines four breakthrough technologies:
 
-### For AI Development
+#### 1. 🎙️ Voice-First Capture (Accessibility)
+- **No typing required** — elders record in their native language
+- **Audio/video upload** or direct voice recording
+- **AI transcription** (OpenAI Whisper, HuggingFace models)
+- **Works offline** (mobile app for remote areas — future roadmap)
 
-- **Reduce Bias** - Train on diverse, non-Western knowledge
-- **Enable Reasoning** - MeTTa symbolic AI enables logical inference, not just pattern matching
-- **Ethical Data** - Contributors consent and are recognized
-- **Explainability** - See how AI arrives at answers about cultural knowledge
+#### 2. 🧠 Symbolic AI (MeTTa) — AGI-Ready Knowledge
+- Convert transcripts to **MeTTa atoms** (symbolic AI format)
+- Example: `(plant "aloe_vera") (treats "aloe_vera" "burn") (found_in "aloe_vera" "kenya")`
+- Enables **logical reasoning**, not just keyword search
+- AI can **infer new relationships** and answer complex queries
+- **Explainable reasoning traces** show how AI reached conclusions
 
-### For Researchers
+#### 3. ⛓️ Blockchain Provenance (Ownership & Trust)
+- **Immutable attribution** on Linea zkEVM (Ethereum Layer 2)
+- **CID (IPFS hash)** stored on-chain for content verification
+- **License enforcement** (Community Only, CC-BY-NC, Research, Open Access)
+- **Reputation tokens** (non-transferable ERC20) reward contributors
+- **~$0.05 per entry** (affordable at scale)
 
-- **Structured Knowledge** - Query cultural wisdom like a database
-- **Provenance** - Know the source and validation status
-- **Multilingual** - Access knowledge in original languages
-- **Reasoning Traces** - Understand AI's logical steps
+#### 4. 🤖 Autonomous Agent Validation (Quality Control)
+- **Fetch.AI uAgents** coordinate processing pipeline:
+  - **Ingest Agent** — handles submissions
+  - **Transcribe Agent** — audio → text
+  - **Symbolizer Agent** — text → MeTTa atoms
+  - **Validator Agent** — community approval workflow
+  - **Query Agent** — natural language Q&A with reasoning
+
+### Result: A Living Knowledge Graph
+- **Searchable, queryable, and reasoning-enabled** cultural database
+- **Community-owned and validated** by local experts
+- **AGI-compatible** for future AI training and research
+- **Transparent and explainable** — see how AI uses the knowledge
+
+---
+
+---
+
+## 🌟 Why AfriVerse Matters
+
+### For African Communities 🏘️
+
+✅ **Cultural Sovereignty**  
+- Communities **own their data** (blockchain provenance)
+- **Choose access levels** (Community Only, Research, Public)
+- **Cannot be censored** or deleted by centralized platforms
+
+✅ **Economic Recognition**  
+- **Reputation tokens** earned for contributions
+- Future: **Tokenized cultural IP** for sustainable funding
+- **Direct attribution** — every use links back to source
+
+✅ **Intergenerational Bridge**  
+- **Youth can access elder wisdom** in digital format
+- **Oral traditions preserved** beyond individual lifetimes
+- **Languages revitalized** through documentation
+
+✅ **Cultural Accuracy**  
+- **Community validators** ensure correctness
+- **No misrepresentation** by external parties
+- **Context preserved** alongside knowledge
+
+---
+
+### For AGI Development 🤖
+
+✅ **Diverse Training Data**  
+- **Non-Western knowledge systems** included in AGI training
+- **Reduce cultural bias** in AI models
+- **Multilingual reasoning** (Swahili, Yoruba, Kikuyu, etc.)
+
+✅ **Symbolic AI Foundation**  
+- **MeTTa atoms enable reasoning**, not just pattern matching
+- AGI can **infer relationships** (`if plant treats burns → has medicinal use`)
+- **Explainable AI** — trace how conclusions were reached
+
+✅ **Ethical AI Benchmark**  
+- Model for **consent-based data collection**
+- **Community governance** of AI training data
+- **Transparent provenance** for every data point
+
+---
+
+### For Researchers & Educators 📚
+
+✅ **Structured Cultural Database**  
+- **Query like SQL**: "Find all medicinal plants used by Kikuyu for burns"
+- **Graph relationships**: See connections between plants, practices, and beliefs
+- **Temporal data**: Track how knowledge evolved over time
+
+✅ **Verified Sources**  
+- **Blockchain provenance** proves authenticity
+- **Validation scores** show community approval
+- **IPFS storage** ensures content integrity
+
+✅ **Multilingual Access**  
+- **Original language preservation** alongside translations
+- **Cultural context maintained** in metadata
+- **No loss of meaning** through over-simplification
+
+✅ **Research Compliance**  
+- **Clear licensing** (Community, Research, Open Access)
+- **Ethical data use** with contributor consent
+- **Citation-ready** with immutable references
+
+---
+
+### For the Global AGI Ecosystem 🌐
+
+✅ **Aligns with SingularityNET's Vision**  
+- **Decentralized AI** — no single entity controls the knowledge
+- **Beneficial AGI** — ensures African voices shape future AI
+- **Open ecosystem** — data available for ethical research
+
+✅ **Supports UN Sustainable Development Goals**  
+- **SDG 4 (Education)** — preserve and share cultural knowledge
+- **SDG 10 (Reduced Inequalities)** — include Global South in AI development
+- **SDG 16 (Peace & Justice)** — protect indigenous rights
+
+✅ **Sets Precedent for Cultural Data Governance**  
+- **Model replicable** for other indigenous communities worldwide
+- **Standards for consent** in cultural data collection
+- **Blueprint for community-owned AI datasets**
 
 ---
 
@@ -172,7 +352,8 @@ A voice-first platform where elders and cultural practitioners can:
 - **Node.js + Express** - RESTful API server
 - **PostgreSQL + Prisma** - Database and ORM
 - **Redis + BullMQ** - Caching and job queues
-- **OpenAI Whisper** - Speech-to-text transcription
+- **ASI:Cloud** - AI inference ($20 hackathon credits) 🎟️
+- **OpenAI Whisper** - Speech-to-text (fallback)
 - **Pinata** - IPFS pinning service
 
 ### Blockchain
@@ -181,10 +362,11 @@ A voice-first platform where elders and cultural practitioners can:
 - **Hardhat** - Development framework
 - **OpenZeppelin** - Security-audited contract libraries
 
-### AI & Agents
-- **MeTTa** - Symbolic AI for knowledge representation
-- **Fetch.AI uAgents** - Autonomous agent framework (Python)
-- **HuggingFace** - Fallback AI models
+### AI & Agents (BGI25 Hackathon Stack)
+- **Hyperon MeTTa** - Real symbolic AI runtime for knowledge representation
+- **Fetch.AI uAgents** - Autonomous agent framework (3 agents + Bureau)
+- **ASI Alliance Tools** - Decentralized AI infrastructure
+- **HuggingFace** - Multilingual NLP models (fallback)
 
 ---
 

@@ -1,60 +1,129 @@
 const axios = require('axios');
-const { OpenAI } = require('openai');
+const FormData = require('form-data');
 
 /**
  * TranscriptionService
  *
- * Provides audio->text transcription using OpenAI Whisper with a
- * HuggingFace fallback for resilience. Maps common language codes
- * for African languages (sw, am, yo, ig, ha) and English.
+ * Provides audio->text transcription using ASI:Cloud AI inference
+ * (using hackathon $20 credits) with HuggingFace and OpenAI fallbacks.
+ * Maps common language codes for African languages (sw, am, yo, ig, ha) and English.
  *
  * Env:
- * - OPENAI_API_KEY: API key for OpenAI Whisper
+ * - ASI_CLOUD_API_KEY: API key for ASI:Cloud inference ($20 hackathon credits)
+ * - OPENAI_API_KEY: Fallback API key for OpenAI Whisper
  * - HUGGINGFACE_TOKEN: Token for HuggingFace Inference API
  */
 class TranscriptionService {
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
+    // Priority 1: ASI:Cloud (Hackathon credits)
+    this.asiCloudKey = process.env.ASI_CLOUD_API_KEY;
+    this.asiCloudEndpoint = process.env.ASI_CLOUD_ENDPOINT || 'https://cloud.fetch.ai/v1/inference';
+    
+    // Fallbacks
+    this.openaiKey = process.env.OPENAI_API_KEY;
+    this.huggingfaceToken = process.env.HUGGINGFACE_TOKEN;
   }
 
   /**
    * Transcribe an audio buffer to text.
-   * Tries OpenAI Whisper first; falls back to HuggingFace model.
+   * Priority: ASI:Cloud ($20 credits) → OpenAI → HuggingFace
    * @param {Buffer} buffer - Audio bytes (wav recommended)
    * @param {string} [language='sw'] - ISO-ish language code
-   * @returns {Promise<{text:string, language:string, duration:number|null, words:any[]}>}
+   * @returns {Promise<{text:string, language:string, duration:number|null, words:any[], provider:string}>}
    */
   async transcribeAudio(buffer, language = 'sw') {
-    try {
-      // For MVP, using OpenAI Whisper
-      const transcription = await this.openai.audio.transcriptions.create({
-        file: buffer,
-        model: "whisper-1",
-        language: this.mapLanguageCode(language),
-        response_format: "verbose_json"
-      });
-
-      return {
-        text: transcription.text,
-        language: transcription.language,
-        duration: transcription.duration,
-        words: transcription.words || []
-      };
-    } catch (error) {
-      console.error('Transcription Error:', error);
-      
-      // Fallback to Hugging Face if available
-      return await this.transcribeWithHuggingFace(buffer, language);
+    // Try ASI:Cloud first (hackathon credits)
+    if (this.asiCloudKey) {
+      try {
+        return await this.transcribeWithASICloud(buffer, language);
+      } catch (error) {
+        console.error('ASI:Cloud transcription failed:', error.message);
+      }
     }
+
+    // Fallback to OpenAI
+    if (this.openaiKey) {
+      try {
+        return await this.transcribeWithOpenAI(buffer, language);
+      } catch (error) {
+        console.error('OpenAI transcription failed:', error.message);
+      }
+    }
+    
+    // Final fallback to HuggingFace
+    return await this.transcribeWithHuggingFace(buffer, language);
+  }
+
+  /**
+   * Transcribe using ASI:Cloud inference API (Hackathon $20 credits)
+   * @param {Buffer} buffer - Audio bytes
+   * @param {string} language - Language code
+   * @returns {Promise<{text:string, language:string, duration:number|null, words:any[], provider:string}>}
+   */
+  async transcribeWithASICloud(buffer, language) {
+    const formData = new FormData();
+    formData.append('file', buffer, {
+      filename: 'audio.wav',
+      contentType: 'audio/wav'
+    });
+    formData.append('model', 'whisper-1');
+    formData.append('language', this.mapLanguageCode(language));
+
+    const response = await axios.post(
+      `${this.asiCloudEndpoint}/whisper/transcriptions`,
+      formData,
+      {
+        headers: {
+          'Authorization': `Bearer ${this.asiCloudKey}`,
+          ...formData.getHeaders()
+        },
+        timeout: 60000
+      }
+    );
+
+    return {
+      text: response.data.text,
+      language: response.data.language || language,
+      duration: response.data.duration || null,
+      words: response.data.words || [],
+      provider: 'ASI:Cloud'
+    };
+  }
+
+  /**
+   * Transcribe using OpenAI Whisper API (fallback)
+   * @param {Buffer} buffer - Audio bytes
+   * @param {string} language - Language code
+   * @returns {Promise<{text:string, language:string, duration:number|null, words:any[], provider:string}>}
+   */
+  async transcribeWithOpenAI(buffer, language) {
+    const { OpenAI } = require('openai');
+    const openai = new OpenAI({ apiKey: this.openaiKey });
+
+    const formData = new FormData();
+    formData.append('file', buffer, 'audio.wav');
+
+    const transcription = await openai.audio.transcriptions.create({
+      file: buffer,
+      model: "whisper-1",
+      language: this.mapLanguageCode(language),
+      response_format: "verbose_json"
+    });
+
+    return {
+      text: transcription.text,
+      language: transcription.language,
+      duration: transcription.duration,
+      words: transcription.words || [],
+      provider: 'OpenAI'
+    };
   }
 
   /**
    * HuggingFace fallback transcription using wav2vec2 model.
    * @param {Buffer} buffer
    * @param {string} language
-   * @returns {Promise<{text:string, language:string, duration:null, words:any[]}>}
+   * @returns {Promise<{text:string, language:string, duration:null, words:any[], provider:string}>}
    */
   async transcribeWithHuggingFace(buffer, language) {
     try {
@@ -63,7 +132,7 @@ class TranscriptionService {
         buffer,
         {
           headers: {
-            'Authorization': `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
+            'Authorization': `Bearer ${this.huggingfaceToken}`,
             'Content-Type': 'application/octet-stream'
           }
         }
@@ -73,10 +142,11 @@ class TranscriptionService {
         text: response.data.text,
         language: language,
         duration: null,
-        words: []
+        words: [],
+        provider: 'HuggingFace'
       };
     } catch (error) {
-      throw new Error(`Transcription failed: ${error.message}`);
+      throw new Error(`All transcription providers failed: ${error.message}`);
     }
   }
 

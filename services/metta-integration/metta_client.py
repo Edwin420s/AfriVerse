@@ -1,27 +1,41 @@
 #!/usr/bin/env python3
 """
 MeTTa Client for AfriVerse - Symbolic AI Integration
+Uses Hyperon MeTTa runtime for proper symbolic reasoning
 """
 
-import requests
 import json
 from typing import List, Dict, Any, Optional
 
+try:
+    from hyperon import MeTTa, AtomSpace
+    HYPERON_AVAILABLE = True
+except ImportError:
+    HYPERON_AVAILABLE = False
+    print("Warning: hyperon not installed. Install with: pip install hyperon")
+
 class MeTTaClient:
-    def __init__(self, endpoint: str = "http://localhost:8080"):
-        self.endpoint = endpoint
-        self.session = requests.Session()
+    def __init__(self):
+        """Initialize MeTTa runtime with AtomSpace"""
+        if not HYPERON_AVAILABLE:
+            raise RuntimeError("Hyperon MeTTa not installed. Run: pip install hyperon")
+        
+        self.metta = MeTTa()
+        self.space = AtomSpace()
+        self.metta.space = self.space
+        
+        # Track atom count
+        self.atom_count = 0
     
     def evaluate(self, expression: str) -> Dict[str, Any]:
         """Evaluate a MeTTa expression"""
         try:
-            response = self.session.post(
-                f"{self.endpoint}/evaluate",
-                json={"expression": expression},
-                timeout=30
-            )
-            response.raise_for_status()
-            return response.json()
+            result = self.metta.run(expression)
+            return {
+                "success": True,
+                "result": str(result),
+                "error": None
+            }
         except Exception as e:
             return {
                 "success": False,
@@ -32,13 +46,17 @@ class MeTTaClient:
     def add_atoms(self, atoms: List[str]) -> Dict[str, Any]:
         """Add multiple atoms to the knowledge base"""
         try:
-            response = self.session.post(
-                f"{self.endpoint}/atoms",
-                json={"atoms": atoms},
-                timeout=30
-            )
-            response.raise_for_status()
-            return response.json()
+            added = 0
+            for atom in atoms:
+                self.metta.run(atom)
+                added += 1
+                self.atom_count += 1
+            
+            return {
+                "success": True,
+                "added": added,
+                "error": None
+            }
         except Exception as e:
             return {
                 "success": False,
@@ -49,13 +67,22 @@ class MeTTaClient:
     def query(self, pattern: str) -> Dict[str, Any]:
         """Query the knowledge base with a pattern"""
         try:
-            response = self.session.post(
-                f"{self.endpoint}/query",
-                json={"pattern": pattern},
-                timeout=30
-            )
-            response.raise_for_status()
-            return response.json()
+            # Use match for pattern matching
+            query_expr = f"(match &self {pattern} $result)"
+            result = self.metta.run(query_expr)
+            
+            # Parse results
+            matches = []
+            if result:
+                # Convert result to list of matches
+                result_str = str(result)
+                matches = [result_str]
+            
+            return {
+                "success": True,
+                "matches": matches,
+                "error": None
+            }
         except Exception as e:
             return {
                 "success": False,
@@ -64,19 +91,25 @@ class MeTTaClient:
             }
     
     def health_check(self) -> bool:
-        """Check if MeTTa server is healthy"""
+        """Check if MeTTa runtime is working"""
         try:
-            response = self.session.get(f"{self.endpoint}/health", timeout=5)
-            return response.status_code == 200
+            # Try a simple evaluation
+            result = self.metta.run("(+ 1 1)")
+            return True
         except:
             return False
     
     def clear_knowledge_base(self) -> Dict[str, Any]:
         """Clear all atoms (for testing)"""
         try:
-            response = self.session.delete(f"{self.endpoint}/atoms")
-            response.raise_for_status()
-            return response.json()
+            # Reinitialize space
+            self.space = AtomSpace()
+            self.metta.space = self.space
+            self.atom_count = 0
+            return {
+                "success": True,
+                "error": None
+            }
         except Exception as e:
             return {
                 "success": False,
@@ -85,13 +118,7 @@ class MeTTaClient:
     
     def get_atom_count(self) -> int:
         """Get total number of atoms in knowledge base"""
-        try:
-            response = self.session.get(f"{self.endpoint}/atoms/count")
-            response.raise_for_status()
-            data = response.json()
-            return data.get('count', 0)
-        except:
-            return 0
+        return self.atom_count
 
 # Example usage and helper functions
 class AfriVerseMeTTa:
