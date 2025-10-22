@@ -18,7 +18,8 @@
 **Dates:** October 14-25, 2025  
 **Developer:** Edwin Mwiti ([@Edwin420s](https://github.com/Edwin420s))  
 **Institution:** Kirinyaga University, Kenya 🇰🇪  
-**Email:** eduedwyn5@gmail.com
+**Email:** eduedwyn5@gmail.com  
+**Demo Video:** 🎥 [Watch on YouTube](https://www.youtube.com/watch?v=hDPMGjdSVfM)
 
 > **Hackathon Mission:** Build real-world, ethically rooted, AGI-aligned projects using decentralized tools, rooted in cultural intelligence, local needs, and a global future.
 
@@ -592,7 +593,7 @@ We welcome contributors! AfriVerse is built for communities, by communities.
 **Institution:** Kirinyaga University (Electronics & Computer Engineering)  
 **Location:** Nairobi, Kenya 🇰🇪  
 **GitHub:** [@Edwin420s](https://github.com/Edwin420s)  
-**Email:** edwin420@outlook.com
+**Email:** eduedwyn5@gmail.com
 
 ### Hackathon Submission
 
@@ -623,6 +624,7 @@ Built with amazing open-source tools:
 
 **Project Links:**
 - **Repository:** https://github.com/Edwin420s/AfriVerse
+- **Demo Video:** 🎥 [Watch on YouTube](https://www.youtube.com/watch?v=hDPMGjdSVfM)
 - **Setup Guide:** [SETUP.md](./SETUP.md)
 - **API Docs:** [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
 
@@ -631,7 +633,7 @@ Built with amazing open-source tools:
 - **WhatsApp Community:** https://chat.whatsapp.com/Le91NfrRsJT1Dk9fgttoV1
 
 **Support:**
-- Email: edwin420@outlook.com
+- Email: eduedwyn5@gmail.com
 - Open an issue on GitHub
 
 ---
