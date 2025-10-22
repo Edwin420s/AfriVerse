@@ -14,18 +14,14 @@ export default function KnowledgeGraph3D({ data, onNodeSelect, className = "" })
 
     const initGraph = async () => {
       try {
-        // Simulate 3D graph initialization
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        
-        // In a real implementation, we would use Three.js or similar
-        // For now, we'll create a mock 3D visualization using CSS 3D transforms
-        
+        // Quick initialization - no artificial delay
         const container = containerRef.current
         const nodes = data?.nodes || generateSampleNodes()
         
         // Create a simple 3D sphere layout
         create3DSphereLayout(container, nodes)
         
+        // Set loading to false immediately
         setIsLoading(false)
       } catch (error) {
         console.error('Error initializing 3D graph:', error)
@@ -154,7 +150,7 @@ export default function KnowledgeGraph3D({ data, onNodeSelect, className = "" })
       <div className={`bg-primary-navy/30 rounded-xl border border-primary-cyan/20 flex items-center justify-center ${className}`} style={{ height: isFullscreen ? '100vh' : '500px' }}>
         <div className="text-center">
           <div className="spinner w-8 h-8 border-2 border-primary-navy border-t-primary-cyan rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-primary-white/70 text-sm">Initializing 3D Knowledge Graph...</p>
+          <p className="text-primary-white/70 text-sm">Loading graph...</p>
         </div>
       </div>
     )

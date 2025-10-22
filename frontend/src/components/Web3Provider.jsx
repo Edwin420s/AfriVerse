@@ -18,6 +18,8 @@ export default function Web3Provider({ children }) {
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState(null)
   const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false)
+  const [connectedWallet, setConnectedWallet] = useState(null)
+  const [chainId, setChainId] = useState(null)
 
   useEffect(() => {
     // Check if MetaMask is installed
@@ -38,27 +40,114 @@ export default function Web3Provider({ children }) {
     }
   }
 
-  const connectWallet = async () => {
-    if (!isMetaMaskInstalled) {
-      setError('MetaMask is not installed. Please install MetaMask to continue.')
-      return
-    }
-
+  const connectWallet = async (walletType = 'metamask') => {
     setIsConnecting(true)
     setError(null)
 
     try {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })
-      
+      let accounts = []
+      let chainIdHex = null
+
+      switch (walletType) {
+        case 'metamask':
+          if (!window.ethereum) {
+            setError('MetaMask is not installed. Please install it to continue.')
+            window.open('https://metamask.io/download/', '_blank')
+            return
+          }
+          accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+          })
+          chainIdHex = await window.ethereum.request({ method: 'eth_chainId' })
+          setConnectedWallet('MetaMask')
+          break
+
+        case 'coinbase':
+          if (window.coinbaseWalletExtension) {
+            accounts = await window.coinbaseWalletExtension.request({
+              method: 'eth_requestAccounts',
+            })
+            chainIdHex = await window.coinbaseWalletExtension.request({ method: 'eth_chainId' })
+            setConnectedWallet('Coinbase Wallet')
+          } else {
+            setError('Coinbase Wallet is not installed.')
+            window.open('https://www.coinbase.com/wallet', '_blank')
+            return
+          }
+          break
+
+        case 'trust':
+          if (window.trustwallet) {
+            accounts = await window.trustwallet.request({
+              method: 'eth_requestAccounts',
+            })
+            chainIdHex = await window.trustwallet.request({ method: 'eth_chainId' })
+            setConnectedWallet('Trust Wallet')
+          } else {
+            setError('Trust Wallet is not installed.')
+            window.open('https://trustwallet.com/', '_blank')
+            return
+          }
+          break
+
+        case 'phantom':
+          if (window.phantom?.ethereum) {
+            accounts = await window.phantom.ethereum.request({
+              method: 'eth_requestAccounts',
+            })
+            chainIdHex = await window.phantom.ethereum.request({ method: 'eth_chainId' })
+            setConnectedWallet('Phantom')
+          } else {
+            setError('Phantom is not installed.')
+            window.open('https://phantom.app/', '_blank')
+            return
+          }
+          break
+
+        case 'walletconnect':
+          setError('WalletConnect integration coming soon!')
+          return
+
+        case 'rainbow':
+          if (window.rainbow) {
+            accounts = await window.rainbow.request({
+              method: 'eth_requestAccounts',
+            })
+            chainIdHex = await window.rainbow.request({ method: 'eth_chainId' })
+            setConnectedWallet('Rainbow')
+          } else {
+            setError('Rainbow wallet is not installed.')
+            window.open('https://rainbow.me/', '_blank')
+            return
+          }
+          break
+
+        default:
+          // Fallback to MetaMask
+          if (!window.ethereum) {
+            setError('No wallet detected. Please install a Web3 wallet.')
+            return
+          }
+          accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+          })
+          chainIdHex = await window.ethereum.request({ method: 'eth_chainId' })
+          setConnectedWallet('MetaMask')
+      }
+
       if (accounts.length > 0) {
         setAccount(accounts[0])
+        setChainId(parseInt(chainIdHex, 16))
+        // Store connection in localStorage
+        localStorage.setItem('connectedWallet', walletType)
+        localStorage.setItem('walletAccount', accounts[0])
       }
     } catch (err) {
       console.error('Error connecting wallet:', err)
       if (err.code === 4001) {
-        setError('Please connect your MetaMask wallet to continue.')
+        setError('Connection request was rejected. Please try again.')
+      } else if (err.code === -32002) {
+        setError('Connection request is already pending. Please check your wallet.')
       } else {
         setError('Failed to connect wallet. Please try again.')
       }
@@ -70,6 +159,11 @@ export default function Web3Provider({ children }) {
   const disconnectWallet = () => {
     setAccount(null)
     setError(null)
+    setConnectedWallet(null)
+    setChainId(null)
+    // Clear localStorage
+    localStorage.removeItem('connectedWallet')
+    localStorage.removeItem('walletAccount')
   }
 
   const signMessage = async (message) => {
@@ -118,6 +212,8 @@ export default function Web3Provider({ children }) {
     isConnecting,
     error,
     isMetaMaskInstalled,
+    connectedWallet,
+    chainId,
     connectWallet,
     disconnectWallet,
     signMessage,
@@ -127,7 +223,7 @@ export default function Web3Provider({ children }) {
   return (
     <Web3Context.Provider value={value}>
       {children}
-      
+
       {/* Error Toast */}
       <AnimatePresence>
         {error && (
